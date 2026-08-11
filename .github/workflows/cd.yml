@@ -56,10 +56,11 @@ jobs:
         run: |
           export PATH="$HOME/.cargo/bin:$PATH"
           if [ -n "$STELLAR_SECRET_KEY" ]; then
-            stellar keys add deployer --secret-key "$STELLAR_SECRET_KEY"
+            echo "Using provided STELLAR_SECRET_KEY for deployer account..."
+            stellar keys add deployer --secret-key "$STELLAR_SECRET_KEY" || true
           else
-            echo "No STELLAR_SECRET_KEY provided, generating ephemeral testnet account..."
-            stellar keys generate deployer --network testnet --fund
+            echo "No STELLAR_SECRET_KEY provided, generating testnet account identity..."
+            stellar keys generate deployer --network testnet || true
           fi
           bash ./scripts/deploy.sh
 
