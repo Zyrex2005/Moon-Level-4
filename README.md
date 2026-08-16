@@ -4,7 +4,7 @@
 
 🚀 **Live Demo:** [https://level4-steller-bice.vercel.app/](https://level4-steller-bice.vercel.app/)  
 🎥 **Demo Video:** [https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing](https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing)
-
+**X Profile** [https://x.com/JaiBhagwans5xw](https://x.com/JaiBhagwans5xw)
 ## 📝 Feedback Form & Responses Sheet
 - **Google Form:** https://docs.google.com/forms/d/e/1FAIpQLSdkH5jicUv_iJpKaAULf9jGbagu9LoSYN7ZQgLY-XNXUU-MVA/viewform?usp=sharing&ouid=106348911276632675387
 - **Feedback Google Sheet:** https://docs.google.com/spreadsheets/d/1d8ZYc_93PM-ZHsHxYFSDZA5S8Zb53Nd2H4PAVzh_fL0/edit?usp=sharing
@@ -132,8 +132,6 @@ The following Stellar Testnet wallet addresses successfully interacted with the 
 ## 📸 Interface Preview (User Placeholders)
 
 - **Onboarding walkthrough & wallet setup:**
-  ## 📸 Interface Preview (User Placeholders)
-
 - **Onboarding walkthrough & wallet setup:**
   ![alt text](image-4.png)
 - **Active and closed proposal dashboard with live vote progress:**
