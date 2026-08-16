@@ -146,16 +146,6 @@ The following Stellar Testnet wallet addresses successfully interacted with the 
   ![alt text](image-2.png)
 
 ---
-- **Active and closed proposal dashboard with live vote progress:**
-  ![Proposals Dashboard](./screenshots/proposals.png)
-- **Treasury pool balance, XLM deposit portal, and disbursement history logs:**
-  ![Treasury Dashboard](./screenshots/treasury.png)
-- **Submit Proposal form with real-time balance and G-address validation:**
-  ![Create Proposal Form](./screenshots/create_proposal.png)
-- **Contextual rating & suggestion feedback widget:**
-  ![Feedback Widget](./screenshots/feedback.png)
-
----
 
 ## 📊 Analytics, Telemetry & Sentry Monitoring
 
