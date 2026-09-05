@@ -7,42 +7,57 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: {
-          50: '#f6f6f6',
-          100: '#e7e7e7',
-          200: '#d1d1d1',
-          300: '#b0b0b0',
-          400: '#888888',
-          500: '#6d6d6d',
-          600: '#5d5d5d',
-          700: '#4f4f4f',
-          800: '#454545',
-          900: '#1e2022', // Dark background
+        zyrex: {
+          950: '#07080c', // Deep obsidian background
+          900: '#0d1117', // Surface card background
+          850: '#161b22', // Card hover / elevated
+          800: '#21262d', // Border stroke dark
+          700: '#30363d', // Muted stroke
+          400: '#8b949e', // Text muted
+          300: '#c9d1d9', // Text body
+          100: '#f0f6fc', // Heading text
         },
-        brass: {
-          50: '#fbfaf7',
-          100: '#f4ebd8',
-          200: '#e9d7b2',
-          300: '#dbbe83',
-          400: '#caa058',
-          500: '#be873f', // Accent color
-          600: '#a36932',
-          700: '#834f2b',
-          800: '#6a3f27',
-          900: '#42241b',
+        cyan: {
+          400: '#38bdf8',
+          500: '#00f2fe',
+          600: '#0284c7',
         },
-        mint: {
-          500: '#2ecc71',
+        violet: {
+          400: '#a78bfa',
+          500: '#8b5cf6',
+          600: '#7c3aed',
         },
-        parchment: {
-          100: '#f9f6f0',
-          200: '#efebe3',
-        }
+        amber: {
+          400: '#fbbf24',
+          500: '#f59e0b',
+        },
+        emerald: {
+          400: '#34d399',
+          500: '#10b981',
+        },
+      },
+      boxShadow: {
+        'glow-cyan': '0 0 25px -5px rgba(0, 242, 254, 0.25)',
+        'glow-violet': '0 0 25px -5px rgba(139, 92, 246, 0.25)',
+        'glow-amber': '0 0 25px -5px rgba(245, 158, 11, 0.25)',
+        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
       },
       borderRadius: {
-        'seal': '12px',
+        'seal': '16px',
+        'glass': '20px',
+      },
+      animation: {
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'glow': 'glow 2s ease-in-out infinite alternate',
+      },
+      keyframes: {
+        glow: {
+          '0%': { boxShadow: '0 0 15px -3px rgba(0, 242, 254, 0.3)' },
+          '100%': { boxShadow: '0 0 25px 3px rgba(139, 92, 246, 0.4)' },
+        }
       }
     },
   },
   plugins: [],
 }
+

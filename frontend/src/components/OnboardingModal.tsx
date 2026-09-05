@@ -20,11 +20,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-900/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-ink-800 border border-brass-500/30 rounded-seal max-w-lg w-full p-6 shadow-2xl flex flex-col gap-6 relative text-parchment-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xl animate-fade-in">
+      <div className="glass-panel border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl flex flex-col gap-6 relative text-white">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-ink-400 hover:text-parchment-100 text-xl font-bold transition"
+          className="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold transition"
           aria-label="Close modal"
         >
           ✕
@@ -32,34 +32,34 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
         {/* Modal Header */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-brass-500/10 border border-brass-500/30 flex items-center justify-center text-brass-400 font-bold text-lg">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-400 via-sky-400 to-violet-600 flex items-center justify-center text-slate-950 font-black text-base shadow-[0_0_20px_rgba(0,242,254,0.4)]">
             {step}
           </div>
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-brass-400">
-              {step === 1 && "Welcome to SkillEscrow"}
+            <h2 className="text-xl font-black tracking-tight text-gradient-cyan">
+              {step === 1 && "Welcome to AstraTrust Protocol"}
               {step === 2 && "Connect Freighter Wallet"}
               {step === 3 && "How Escrow & Reputation Work"}
             </h2>
-            <p className="text-xs text-ink-400">Step {step} of 3 — Quick Setup Guide</p>
+            <p className="text-xs text-slate-400 font-mono">Step {step} of 3 — Quick Setup Guide</p>
           </div>
         </div>
 
         {/* Step 1: Introduction */}
         {step === 1 && (
-          <div className="flex flex-col gap-4 text-sm text-parchment-300">
-            <p>
-              SkillEscrow is a decentralized freelance marketplace on the Stellar network (Soroban) that holds buyer funds safely in smart contract escrow until delivery.
+          <div className="flex flex-col gap-4 text-xs text-slate-300">
+            <p className="leading-relaxed">
+              <strong>AstraTrust Protocol</strong> is a next-generation decentralized freelance marketplace built on the Stellar Soroban smart contract platform. Funds are locked in non-custodial escrow contracts with automated timelock protection.
             </p>
-            <div className="bg-ink-900/50 p-4 rounded-seal border border-brass-500/15 flex flex-col gap-2 text-xs">
-              <div className="flex items-center gap-2 text-mint-400 font-semibold">
-                <span>✓</span> Trustless Escrow Protection
+            <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 flex flex-col gap-2.5">
+              <div className="flex items-center gap-2 text-emerald-400 font-semibold">
+                <span>✓</span> Non-Custodial Smart Contract Protection
               </div>
-              <div className="flex items-center gap-2 text-mint-400 font-semibold">
+              <div className="flex items-center gap-2 text-cyan-400 font-semibold">
                 <span>✓</span> Immutable On-Chain Freelancer Reputation Scores
               </div>
-              <div className="flex items-center gap-2 text-mint-400 font-semibold">
-                <span>✓</span> Automated Timed Refunds & Dispute Guarding
+              <div className="flex items-center gap-2 text-amber-400 font-semibold">
+                <span>✓</span> Automated Timed Refunds & Dispute Safeguards
               </div>
             </div>
           </div>
@@ -67,85 +67,100 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
         {/* Step 2: Wallet Setup & Network Check */}
         {step === 2 && (
-          <div className="flex flex-col gap-4 text-sm text-parchment-300">
-            <p>
-              SkillEscrow requires the <strong>Freighter Wallet</strong> browser extension connected to the <strong>Stellar Testnet</strong> network.
+          <div className="flex flex-col gap-4 text-xs text-slate-300">
+            <p className="leading-relaxed">
+              AstraTrust Protocol connects to the <strong>Freighter Wallet</strong> browser extension on <strong>Stellar Testnet</strong>.
             </p>
 
             {!isWalletInstalled ? (
-              <div className="bg-yellow-500/10 border border-yellow-500/30 p-4 rounded-seal text-xs text-yellow-300 flex flex-col gap-2">
-                <span className="font-bold">⚠️ Freighter Wallet Not Detected</span>
+              <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl text-xs text-amber-300 flex flex-col gap-2">
+                <span className="font-bold">⚠️ Freighter Extension Not Detected</span>
                 <span>Install Freighter to sign transactions and create jobs on Stellar Testnet.</span>
                 <a
                   href="https://www.freighter.app/"
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-2 inline-block text-center bg-brass-500 hover:bg-brass-400 text-ink-900 font-bold py-2 px-4 rounded transition text-xs"
+                  className="mt-2 inline-block text-center bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold py-2 px-4 rounded-xl transition text-xs shadow-[0_0_15px_rgba(251,191,36,0.3)]"
                 >
                   Download Freighter Extension ↗
                 </a>
               </div>
             ) : isConnected ? (
-              <div className="bg-mint-500/10 border border-mint-500/30 p-4 rounded-seal text-xs text-mint-400 font-semibold flex items-center gap-2">
+              <div className="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl text-xs text-emerald-400 font-semibold flex items-center gap-2">
                 <span>✓</span> Freighter Wallet Connected Successfully!
               </div>
             ) : (
               <div className="flex flex-col gap-3">
                 <button
                   onClick={onConnectWallet}
-                  className="w-full bg-brass-500 hover:bg-brass-400 text-ink-900 font-bold py-2.5 px-4 rounded transition text-sm shadow-md"
+                  className="w-full bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500 hover:from-cyan-300 hover:to-violet-400 text-slate-950 font-extrabold py-2.5 px-4 rounded-xl transition text-xs shadow-[0_0_20px_rgba(0,242,254,0.3)]"
                 >
                   Connect Freighter Wallet Now
                 </button>
-                <p className="text-3xs text-ink-400 text-center font-mono">
-                  Make sure your wallet network is set to <strong>Testnet</strong> in Freighter settings.
-                </p>
               </div>
             )}
+
+            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex justify-between items-center text-[10px] font-mono">
+              <span className="text-slate-400">Need free Testnet XLM?</span>
+              <a
+                href="https://laboratory.stellar.org/#account-creator?network=testnet"
+                target="_blank"
+                rel="noreferrer"
+                className="text-amber-400 font-bold hover:underline"
+              >
+                Stellar Friendbot Faucet ↗
+              </a>
+            </div>
           </div>
         )}
 
-        {/* Step 3: How it Works */}
+        {/* Step 3: Mechanics Explainer */}
         {step === 3 && (
-          <div className="flex flex-col gap-4 text-sm text-parchment-300">
-            <ol className="list-decimal list-inside space-y-2 text-xs">
-              <li>
-                <strong>Post a Gig:</strong> Specify the freelancer address, token budget, description, and deadline.
-              </li>
-              <li>
-                <strong>Fund Escrow:</strong> Deposit tokens into the smart contract to activate the gig.
-              </li>
-              <li>
-                <strong>Complete & Rate:</strong> Upon delivery, release payment to the freelancer and leave a 1-5 star score that updates their on-chain reputation score automatically.
-              </li>
-            </ol>
+          <div className="flex flex-col gap-4 text-xs text-slate-300">
+            <p className="leading-relaxed">
+              When a job is completed, payment is released and an <strong>atomic cross-contract invocation</strong> updates the freelancer's reputation score on-chain in the same transaction!
+            </p>
+            <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 flex flex-col gap-2 font-mono text-[10px]">
+              <span className="text-cyan-400">1. Client posts gig & locks tokens in Escrow</span>
+              <span className="text-amber-400">2. Freelancer completes deliverable requirements</span>
+              <span className="text-emerald-400">3. Client releases payment + submits 1-5★ rating</span>
+              <span className="text-violet-400">4. Escrow invokes Reputation contract atomically</span>
+            </div>
           </div>
         )}
 
-        {/* Footer Navigation */}
-        <div className="flex justify-between items-center pt-4 border-t border-brass-500/15">
-          {step > 1 ? (
-            <button
-              onClick={() => setStep(step - 1)}
-              className="text-xs font-semibold text-ink-400 hover:text-parchment-100 transition"
-            >
-              ← Back
-            </button>
-          ) : (
-            <div />
-          )}
+        {/* Modal Controls */}
+        <div className="flex justify-between items-center pt-3 border-t border-slate-800">
+          <button
+            onClick={() => setStep((s) => Math.max(1, s - 1))}
+            disabled={step === 1}
+            className="text-xs font-semibold text-slate-400 hover:text-white disabled:opacity-30 transition"
+          >
+            ← Previous
+          </button>
+
+          <div className="flex gap-1.5">
+            {[1, 2, 3].map((i) => (
+              <span
+                key={i}
+                className={`w-2 h-2 rounded-full transition ${
+                  step === i ? "bg-cyan-400 shadow-[0_0_10px_rgba(0,242,254,0.5)]" : "bg-slate-800"
+                }`}
+              />
+            ))}
+          </div>
 
           {step < 3 ? (
             <button
-              onClick={() => setStep(step + 1)}
-              className="bg-brass-500 hover:bg-brass-400 text-ink-900 font-bold py-2 px-5 rounded text-xs transition"
+              onClick={() => setStep((s) => Math.min(3, s + 1))}
+              className="bg-slate-900 hover:bg-slate-800 text-cyan-400 px-4 py-1.5 rounded-xl text-xs font-bold transition border border-cyan-500/30"
             >
               Next →
             </button>
           ) : (
             <button
               onClick={onClose}
-              className="bg-mint-500 hover:bg-mint-400 text-ink-900 font-bold py-2 px-5 rounded text-xs transition"
+              className="bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500 text-slate-950 px-4 py-1.5 rounded-xl text-xs font-extrabold transition shadow-[0_0_15px_rgba(0,242,254,0.3)]"
             >
               Get Started 🚀
             </button>
@@ -155,3 +170,4 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
     </div>
   );
 };
+

@@ -2,6 +2,7 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { useWallet } from "./hooks/useWallet";
 import { useJobs } from "./hooks/useJobs";
 import { Navbar } from "./components/Navbar";
+import type { NavTab } from "./components/Navbar";
 import { CreateJobForm } from "./components/CreateJobForm";
 import type { JobFormData } from "./components/CreateJobForm";
 import { JobList } from "./components/JobList";
@@ -10,21 +11,28 @@ import {
   callContractMethod,
   ESCROW_CONTRACT_ID,
   SOROBAN_RPC_URL,
+  rpcServer,
 } from "./lib/soroban";
 import { Address, nativeToScVal } from "@stellar/stellar-sdk";
 import { analytics } from "./lib/analytics";
 import { initSentry, captureException } from "./lib/sentry";
 
-// Code-split / lazy-load non-critical views
+// Code-split lazy views
 const OnboardingModal = lazy(() =>
-  import("./components/OnboardingModal").then((module) => ({
-    default: module.OnboardingModal,
+  import("./components/OnboardingModal").then((m) => ({
+    default: m.OnboardingModal,
   }))
 );
 
 const AdminStats = lazy(() =>
-  import("./components/AdminStats").then((module) => ({
-    default: module.AdminStats,
+  import("./components/AdminStats").then((m) => ({
+    default: m.AdminStats,
+  }))
+);
+
+const FreelancerDirectory = lazy(() =>
+  import("./components/FreelancerDirectory").then((m) => ({
+    default: m.FreelancerDirectory,
   }))
 );
 
@@ -33,17 +41,26 @@ export default function App() {
   const { address, sign } = wallet;
   const { jobs, loading, error, refreshJobs } = useJobs();
 
+  const [activeTab, setActiveTab] = useState<NavTab>("marketplace");
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [prefilledFreelancer, setPrefilledFreelancer] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeJobId, setActiveJobId] = useState<number | null>(null);
   const [txError, setTxError] = useState<string | null>(null);
   const [txSuccess, setTxSuccess] = useState<string | null>(null);
 
+  const [ledgerSequence, setLedgerSequence] = useState<number | undefined>(undefined);
+
   useEffect(() => {
     initSentry();
     analytics.init();
+
+    // Fetch latest ledger
+    rpcServer
+      .getLatestLedger()
+      .then((res) => setLedgerSequence(res.sequence))
+      .catch((err) => console.warn("Failed to fetch ledger sequence:", err));
   }, []);
 
   useEffect(() => {
@@ -52,7 +69,7 @@ export default function App() {
     }
   }, [address]);
 
-  // Helper to clear alerts after a timeout
+  // Helper to clear transaction alerts
   const setTimedAlerts = (successMsg: string | null, errorMsg: string | null) => {
     setTxSuccess(successMsg);
     setTxError(errorMsg);
@@ -83,12 +100,14 @@ export default function App() {
 
       await callContractMethod(address, ESCROW_CONTRACT_ID, "create_job", args, sign);
 
-      setTimedAlerts("Gig listing created successfully!", null);
+      setTimedAlerts("⚡ Escrow gig listing created on Stellar Testnet!", null);
       analytics.trackJobCreated(Date.now(), address, data.freelancer, data.amount);
       await refreshJobs();
+      setActiveTab("marketplace");
+      setPrefilledFreelancer("");
     } catch (err) {
       captureException(err, "handleCreateJob");
-      setTimedAlerts(null, err instanceof Error ? err.message : "Failed to create job.");
+      setTimedAlerts(null, err instanceof Error ? err.message : "Failed to create escrow job.");
     } finally {
       setIsSubmitting(false);
     }
@@ -103,7 +122,7 @@ export default function App() {
     try {
       const args = [nativeToScVal(BigInt(jobId), { type: "u64" })];
       await callContractMethod(address, ESCROW_CONTRACT_ID, "fund_job", args, sign);
-      setTimedAlerts(`Job #${jobId} funded and activated!`, null);
+      setTimedAlerts(`✓ Job #${jobId} funded! Tokens locked in Soroban escrow.`, null);
       analytics.trackJobFunded(jobId, address);
       await refreshJobs();
     } catch (err) {
@@ -123,7 +142,7 @@ export default function App() {
     try {
       const args = [nativeToScVal(BigInt(jobId), { type: "u64" })];
       await callContractMethod(address, ESCROW_CONTRACT_ID, "complete_job", args, sign);
-      setTimedAlerts(`Job #${jobId} completed. Payment released!`, null);
+      setTimedAlerts(`✓ Job #${jobId} completed. Escrow funds released to freelancer!`, null);
       analytics.trackJobCompleted(jobId, address);
       await refreshJobs();
     } catch (err) {
@@ -143,7 +162,7 @@ export default function App() {
     try {
       const args = [nativeToScVal(BigInt(jobId), { type: "u64" })];
       await callContractMethod(address, ESCROW_CONTRACT_ID, "refund_job", args, sign);
-      setTimedAlerts(`Job #${jobId} refunded successfully.`, null);
+      setTimedAlerts(`✓ Job #${jobId} timelock refund claimed successfully!`, null);
       await refreshJobs();
     } catch (err) {
       captureException(err, "handleRefundJob");
@@ -165,7 +184,7 @@ export default function App() {
         nativeToScVal(score, { type: "u32" }),
       ];
       await callContractMethod(address, ESCROW_CONTRACT_ID, "submit_rating", args, sign);
-      setTimedAlerts(`Submitted rating of ${score} stars!`, null);
+      setTimedAlerts(`⭐ Submitted atomic cross-contract rating of ${score} stars!`, null);
       analytics.trackRatingSubmitted(jobId, score);
       await refreshJobs();
     } catch (err) {
@@ -176,11 +195,21 @@ export default function App() {
     }
   };
 
+  const handleHireFreelancer = (freelancerAddr: string) => {
+    setPrefilledFreelancer(freelancerAddr);
+    setActiveTab("post-gig");
+  };
+
   const isConfigured = ESCROW_CONTRACT_ID !== "";
 
+  // Compute protocol summary metrics
+  const totalVolume = jobs.reduce((sum, j) => sum + (parseFloat(j.amount) || 0), 0);
+  const activeEscrowsCount = jobs.filter((j) => j.status === "Funded").length;
+  const completedCount = jobs.filter((j) => j.status === "Completed").length;
+
   return (
-    <div className="min-h-screen bg-ink-900 text-parchment-100 flex flex-col font-sans">
-      {/* Header Navbar */}
+    <div className="min-h-screen bg-[#05070f] text-slate-300 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950">
+      {/* Header */}
       <Navbar
         address={wallet.address}
         isConnecting={wallet.isConnecting}
@@ -188,108 +217,200 @@ export default function App() {
         error={wallet.error}
         connect={wallet.connect}
         disconnect={wallet.disconnect}
+        activeTab={activeTab}
+        onSelectTab={setActiveTab}
         onOpenOnboarding={() => setIsOnboardingOpen(true)}
-        onToggleAdmin={() => setIsAdminOpen(!isAdminOpen)}
-        isAdminOpen={isAdminOpen}
+        ledgerSequence={ledgerSequence}
       />
 
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8 flex flex-col gap-6">
-        {/* Global Config Check */}
+        {/* Protocol Overview Hero Bar */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-900/80 p-5 rounded-2xl border border-slate-800 backdrop-blur-2xl shadow-[0_0_30px_rgba(0,0,0,0.4)]">
+          <div className="flex flex-col">
+            <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Total Volume</span>
+            <span className="text-xl font-black text-gradient-cyan font-mono">
+              {totalVolume.toLocaleString()} <span className="text-xs text-slate-400 font-sans">XLM</span>
+            </span>
+          </div>
+
+          <div className="flex flex-col">
+            <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Active Escrows</span>
+            <span className="text-xl font-black text-cyan-400 font-mono">
+              {activeEscrowsCount} <span className="text-xs text-slate-400 font-sans">Gigs</span>
+            </span>
+          </div>
+
+          <div className="flex flex-col">
+            <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Settled Volume</span>
+            <span className="text-xl font-black text-emerald-400 font-mono">
+              {completedCount} <span className="text-xs text-slate-400 font-sans">Completed</span>
+            </span>
+          </div>
+
+          <div className="flex flex-col">
+            <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Soroban Network</span>
+            <span className="text-xs font-mono font-bold text-white flex items-center gap-1.5 mt-1">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Stellar Testnet
+            </span>
+          </div>
+        </div>
+
+        {/* Global Contract Config Check */}
         {!isConfigured && (
-          <div className="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-seal text-xs text-yellow-400 font-medium flex justify-between items-center">
+          <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-2xl text-xs text-amber-300 font-semibold flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <span>
-              ⚠️ <strong>Contracts Not Configured:</strong> The escrow contract ID is missing. Build & deploy using <code>deploy.sh</code> and write to <code>.env.local</code>.
+              ⚠️ <strong>Contracts Not Configured:</strong> Soroban Escrow contract ID is missing. Deploy contracts using <code>deploy.sh</code> or set <code>.env.local</code>.
             </span>
             <button
               onClick={() => setIsOnboardingOpen(true)}
-              className="text-xs bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 font-bold px-3 py-1 rounded transition"
+              className="text-xs bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-extrabold px-4 py-2 rounded-xl transition"
             >
               Onboarding Setup Guide →
             </button>
           </div>
         )}
 
-        {/* Transaction Alerts */}
+        {/* Transaction Toast Alerts */}
         {txSuccess && (
-          <div className="bg-mint-500/10 border border-mint-500/30 p-4 rounded-seal text-sm text-mint-500 font-bold animate-fade-in shadow-lg">
-            ✓ {txSuccess}
+          <div className="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl text-xs text-emerald-300 font-bold shadow-lg flex justify-between items-center">
+            <span>{txSuccess}</span>
+            <button onClick={() => setTxSuccess(null)} className="text-slate-400 hover:text-white">
+              ✕
+            </button>
           </div>
         )}
         {txError && (
-          <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-seal text-sm text-red-400 font-bold animate-fade-in shadow-lg">
-            ✗ Error: {txError}
+          <div className="bg-rose-500/10 border border-rose-500/30 p-4 rounded-2xl text-xs text-rose-300 font-bold shadow-lg flex justify-between items-center">
+            <span>Error: {txError}</span>
+            <button onClick={() => setTxError(null)} className="text-slate-400 hover:text-white">
+              ✕
+            </button>
           </div>
         )}
 
-        {/* Dynamic Main View: Admin Stats vs Escrow Marketplace */}
-        {isAdminOpen ? (
-          <Suspense fallback={<div className="text-center py-12 text-ink-400">Loading Telemetry Dashboard...</div>}>
-            <AdminStats jobs={jobs} />
-          </Suspense>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Post Gig Panel */}
-            <div className="lg:col-span-5 flex flex-col gap-4">
-              <CreateJobForm
-                onSubmit={handleCreateJob}
-                isSubmitting={isSubmitting}
-                walletConnected={!!address}
-              />
-
-              <div className="bg-ink-800/20 border border-brass-500/5 p-5 rounded-seal text-xs text-ink-400 flex flex-col gap-2 font-medium">
-                <span className="font-bold text-brass-500/80">Stellar Testnet Status:</span>
-                <span className="break-all font-mono">RPC: {SOROBAN_RPC_URL}</span>
-                <span className="break-all font-mono">
-                  Escrow ID: {ESCROW_CONTRACT_ID || "Not Deployed"}
-                </span>
+        {/* Dynamic Tabbed Views */}
+        {activeTab === "marketplace" && (
+          <div className="flex flex-col gap-5">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-black tracking-tight text-gradient-cyan">
+                  🌐 AstraTrust Marketplace
+                </h2>
+                <p className="text-xs text-slate-400 mt-0.5 font-mono">
+                  Browse and interact with active, completed, and draft smart escrow contracts on Stellar.
+                </p>
               </div>
+
+              <button
+                onClick={refreshJobs}
+                className="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition flex items-center gap-1 font-mono bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800"
+              >
+                <span>🔄</span> Refresh
+              </button>
             </div>
 
-            {/* Active Manifest Panel */}
-            <div className="lg:col-span-7 flex flex-col gap-4">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold tracking-tight text-parchment-200">
-                  Active Gigs
-                </h2>
+            {loading ? (
+              <div className="flex flex-col gap-4">
+                {[1, 2, 3].map((n) => (
+                  <div
+                    key={n}
+                    className="glass-panel p-6 rounded-2xl animate-pulse flex flex-col gap-3"
+                  >
+                    <div className="h-6 bg-slate-800 w-1/3 rounded"></div>
+                    <div className="h-12 bg-slate-800 w-full rounded"></div>
+                    <div className="h-4 bg-slate-800 w-2/3 rounded"></div>
+                  </div>
+                ))}
+              </div>
+            ) : error ? (
+              <div className="bg-rose-500/10 border border-rose-500/20 p-6 rounded-2xl text-center text-rose-300 text-xs font-bold">
+                {error}
+              </div>
+            ) : (
+              <JobList
+                jobs={jobs}
+                walletAddress={address}
+                onFund={handleFundJob}
+                onComplete={handleCompleteJob}
+                onRefund={handleRefundJob}
+                onRate={handleRateJob}
+                activeActionJobId={activeJobId}
+                filterMode="all"
+              />
+            )}
+          </div>
+        )}
+
+        {activeTab === "my-escrows" && (
+          <div className="flex flex-col gap-5">
+            <div>
+              <h2 className="text-2xl font-black tracking-tight text-gradient-cyan">
+                💼 My Escrows Dashboard
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5 font-mono">
+                Escrow contracts where your connected wallet ({address ? `${address.slice(0,6)}…${address.slice(-4)}` : "Not connected"}) is Buyer Client or Freelancer.
+              </p>
+            </div>
+
+            {!address ? (
+              <div className="glass-panel p-10 rounded-2xl text-center flex flex-col items-center gap-3">
+                <p className="text-sm font-bold text-slate-200">Connect your Freighter wallet to view your escrows.</p>
                 <button
-                  onClick={refreshJobs}
-                  className="text-xs font-semibold text-brass-400 hover:text-brass-300 transition"
+                  onClick={wallet.connect}
+                  className="bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500 text-slate-950 font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-[0_0_20px_rgba(0,242,254,0.3)]"
                 >
-                  Refresh List
+                  Connect Wallet
                 </button>
               </div>
+            ) : (
+              <JobList
+                jobs={jobs}
+                walletAddress={address}
+                onFund={handleFundJob}
+                onComplete={handleCompleteJob}
+                onRefund={handleRefundJob}
+                onRate={handleRateJob}
+                activeActionJobId={activeJobId}
+                filterMode="client"
+              />
+            )}
+          </div>
+        )}
 
-              {loading ? (
-                <div className="flex flex-col gap-4">
-                  {[1, 2, 3].map((n) => (
-                    <div
-                      key={n}
-                      className="bg-ink-800/10 border border-brass-500/5 p-6 rounded-seal animate-pulse flex flex-col gap-3"
-                    >
-                      <div className="h-6 bg-ink-800 w-1/3 rounded"></div>
-                      <div className="h-12 bg-ink-800 w-full rounded"></div>
-                      <div className="h-4 bg-ink-800 w-2/3 rounded"></div>
-                    </div>
-                  ))}
-                </div>
-              ) : error ? (
-                <div className="bg-red-500/10 border border-red-500/20 p-6 rounded-seal text-center text-red-400 text-sm font-semibold">
-                  {error}
-                </div>
-              ) : (
-                <JobList
-                  jobs={jobs}
-                  walletAddress={address}
-                  onFund={handleFundJob}
-                  onComplete={handleCompleteJob}
-                  onRefund={handleRefundJob}
-                  onRate={handleRateJob}
-                  activeActionJobId={activeJobId}
-                />
-              )}
+        {activeTab === "post-gig" && (
+          <div className="max-w-3xl mx-auto w-full flex flex-col gap-4">
+            <CreateJobForm
+              onSubmit={handleCreateJob}
+              isSubmitting={isSubmitting}
+              walletConnected={!!address}
+              prefilledFreelancer={prefilledFreelancer}
+            />
+
+            <div className="glass-panel p-4 rounded-2xl text-[10px] text-slate-400 flex flex-col gap-1.5 font-mono border border-slate-800">
+              <span className="font-bold text-cyan-400 font-sans">Stellar Testnet Status:</span>
+              <span className="break-all">RPC URL: {SOROBAN_RPC_URL}</span>
+              <span className="break-all">
+                Escrow Contract ID: {ESCROW_CONTRACT_ID || "Not Deployed"}
+              </span>
             </div>
           </div>
+        )}
+
+        {activeTab === "freelancers" && (
+          <Suspense fallback={<div className="text-center py-12 text-slate-400 text-xs font-mono">Loading Freelancer Directory...</div>}>
+            <FreelancerDirectory
+              jobs={jobs}
+              onSelectFreelancer={handleHireFreelancer}
+            />
+          </Suspense>
+        )}
+
+        {activeTab === "admin" && (
+          <Suspense fallback={<div className="text-center py-12 text-slate-400 text-xs font-mono">Loading Protocol Telemetry...</div>}>
+            <AdminStats jobs={jobs} />
+          </Suspense>
         )}
       </main>
 
@@ -314,3 +435,4 @@ export default function App() {
     </div>
   );
 }
+

@@ -9,7 +9,7 @@ vi.mock("../hooks/useWallet", () => ({
   useWallet: vi.fn(),
 }));
 
-describe("SkillEscrow Frontend Unit Tests", () => {
+describe("AstraTrust Protocol Frontend Unit Tests", () => {
   
   // Test Case 1: Component Render
   it("renders the CreateJobForm inputs and button correctly", () => {
@@ -21,12 +21,13 @@ describe("SkillEscrow Frontend Unit Tests", () => {
       />
     );
 
-    expect(screen.getByText("Post a New Gig")).toBeInTheDocument();
+    expect(screen.getByText("Post AstraTrust Escrow Gig")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("e.g. GB44L2MS...")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("e.g. CDWS...")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("e.g. CDLZFC...")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("e.g. 150")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Create Job Listing" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "🚀 Create Smart Escrow Listing" })).toBeInTheDocument();
   });
+
 
   // Test Case 2: Form Validation Case
   it("shows validation error when entering an invalid freelancer address", async () => {
@@ -39,18 +40,20 @@ describe("SkillEscrow Frontend Unit Tests", () => {
     );
 
     const freelancerInput = screen.getByPlaceholderText("e.g. GB44L2MS...");
-    const submitButton = screen.getByRole("button", { name: "Create Job Listing" });
+    const submitButton = screen.getByRole("button", { name: "🚀 Create Smart Escrow Listing" });
 
     // Type an invalid address
     fireEvent.change(freelancerInput, { target: { value: "invalid-address" } });
-    fireEvent.click(submitButton);
+    fireEvent.submit(submitButton.closest("form")!);
 
     // Wait for the validation message to appear
     await waitFor(() => {
       expect(
-        screen.getByText("Please enter a valid Stellar freelancer public key (starting with G).")
+        screen.getByText(/Please enter a valid Stellar freelancer public key/i)
       ).toBeInTheDocument();
     });
+
+
   });
 
   // Test Case 3: Mocked Wallet Connect Success Case
@@ -70,7 +73,7 @@ describe("SkillEscrow Frontend Unit Tests", () => {
 
     render(<WalletButton />);
 
-    const connectButton = screen.getByRole("button", { name: "Connect wallet" });
+    const connectButton = screen.getByRole("button", { name: "Connect Wallet" });
     expect(connectButton).toBeInTheDocument();
 
     // Click connect and verify it triggers mockConnect

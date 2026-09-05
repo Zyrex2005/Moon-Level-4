@@ -58,7 +58,8 @@ app.get("/api/health", async (req, res) => {
 
   res.json({
     status: "ok",
-    service: "SkillEscrow API Relay",
+    service: "AstraTrust API Relay",
+
     uptimeSeconds: process.uptime(),
     timestamp: new Date().toISOString(),
     sorobanRpc: {
@@ -154,7 +155,7 @@ app.get("/api/stats", (req, res) => {
     : "N/A";
 
   res.json({
-    service: "SkillEscrow Production API",
+    service: "AstraTrust Production API",
     totalFeedbackSubmissions: totalFeedback,
     averageRating: avgRating,
     cacheStatus: {
@@ -172,8 +173,10 @@ app.use((err, req, res, next) => {
 
 if (require.main === module) {
   app.listen(PORT, () => {
-    console.log(`[SkillEscrow API] Running on port ${PORT} with RPC ${SOROBAN_RPC_URL}`);
+    console.log(`[AstraTrust API] Running on port ${PORT} with RPC ${SOROBAN_RPC_URL}`);
   });
 }
 
+
 module.exports = app;
+
