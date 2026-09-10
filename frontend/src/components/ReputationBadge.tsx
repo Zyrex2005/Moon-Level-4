@@ -9,18 +9,18 @@ export function ReputationBadge({ freelancerAddress }: { freelancerAddress: stri
     if (!freelancerAddress) return;
     setLoading(true);
     getReputationDetails(freelancerAddress)
-      .then((res) => {
+      .then((res: { total_score: number; rating_count: number }) => {
         setRep(res);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch((err: unknown) => {
         console.error("Failed to load reputation:", err);
         setLoading(false);
       });
   }, [freelancerAddress]);
 
   if (loading) {
-    return <span className="animate-pulse text-[10px] text-cyan-400 font-mono">Loading score…</span>;
+    return <span className="animate-pulse text-[10px] text-purple-400 font-mono">Loading score…</span>;
   }
 
   const ratingCount = rep?.rating_count || 0;
@@ -34,11 +34,11 @@ export function ReputationBadge({ freelancerAddress }: { freelancerAddress: stri
 
   if (ratingCount > 0) {
     if (numAvg >= 4.8 && ratingCount >= 3) {
-      badgeColor = "border-violet-500/40 bg-violet-500/10 text-violet-300 shadow-[0_0_12px_rgba(168,85,247,0.2)]";
-      tierLabel = "Elite Partner";
+      badgeColor = "border-purple-500/40 bg-purple-500/10 text-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.2)]";
+      tierLabel = "Midnight Elite";
     } else if (numAvg >= 4.0) {
       badgeColor = "border-cyan-500/40 bg-cyan-500/10 text-cyan-300 shadow-[0_0_12px_rgba(0,242,254,0.15)]";
-      tierLabel = "Verified";
+      tierLabel = "Verified ZK";
     } else {
       badgeColor = "border-amber-500/40 bg-amber-500/10 text-amber-300";
       tierLabel = "Active";
@@ -60,4 +60,3 @@ export function ReputationBadge({ freelancerAddress }: { freelancerAddress: stri
     </div>
   );
 }
-

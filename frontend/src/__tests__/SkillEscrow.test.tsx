@@ -9,10 +9,10 @@ vi.mock("../hooks/useWallet", () => ({
   useWallet: vi.fn(),
 }));
 
-describe("AstraTrust Protocol Frontend Unit Tests", () => {
+describe("ZyrexEscrow Protocol Midnight Unit Tests", () => {
   
   // Test Case 1: Component Render
-  it("renders the CreateJobForm inputs and button correctly", () => {
+  it("renders the CreateJobForm inputs and button correctly for Midnight", () => {
     render(
       <CreateJobForm
         onSubmit={vi.fn()}
@@ -21,13 +21,11 @@ describe("AstraTrust Protocol Frontend Unit Tests", () => {
       />
     );
 
-    expect(screen.getByText("Post AstraTrust Escrow Gig")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("e.g. GB44L2MS...")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("e.g. CDLZFC...")).toBeInTheDocument();
+    expect(screen.getByText("Post ZyrexEscrow Gig on Midnight")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("mn_test1q8zyrex88midnightnetworkescrow9901")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("e.g. 150")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "🚀 Create Smart Escrow Listing" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Post Gig & Lock Escrow Funds in Compact Contract 🚀" })).toBeInTheDocument();
   });
-
 
   // Test Case 2: Form Validation Case
   it("shows validation error when entering an invalid freelancer address", async () => {
@@ -39,21 +37,19 @@ describe("AstraTrust Protocol Frontend Unit Tests", () => {
       />
     );
 
-    const freelancerInput = screen.getByPlaceholderText("e.g. GB44L2MS...");
-    const submitButton = screen.getByRole("button", { name: "🚀 Create Smart Escrow Listing" });
+    const freelancerInput = screen.getByPlaceholderText("mn_test1q8zyrex88midnightnetworkescrow9901");
+    const submitButton = screen.getByRole("button", { name: "Post Gig & Lock Escrow Funds in Compact Contract 🚀" });
 
-    // Type an invalid address
-    fireEvent.change(freelancerInput, { target: { value: "invalid-address" } });
+    // Type an invalid short address
+    fireEvent.change(freelancerInput, { target: { value: "abc" } });
     fireEvent.submit(submitButton.closest("form")!);
 
     // Wait for the validation message to appear
     await waitFor(() => {
       expect(
-        screen.getByText(/Please enter a valid Stellar freelancer public key/i)
+        screen.getByText(/Please enter a valid Midnight freelancer public key/i)
       ).toBeInTheDocument();
     });
-
-
   });
 
   // Test Case 3: Mocked Wallet Connect Success Case
@@ -73,7 +69,7 @@ describe("AstraTrust Protocol Frontend Unit Tests", () => {
 
     render(<WalletButton />);
 
-    const connectButton = screen.getByRole("button", { name: "Connect Wallet" });
+    const connectButton = screen.getByRole("button", { name: "Connect Lace Wallet" });
     expect(connectButton).toBeInTheDocument();
 
     // Click connect and verify it triggers mockConnect

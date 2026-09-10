@@ -10,10 +10,9 @@ import { FeedbackWidget } from "./components/FeedbackWidget";
 import {
   callContractMethod,
   ESCROW_CONTRACT_ID,
-  SOROBAN_RPC_URL,
+  SOROBAN_RPC_URL as MIDNIGHT_RPC_URL,
   rpcServer,
-} from "./lib/soroban";
-import { Address, nativeToScVal } from "@stellar/stellar-sdk";
+} from "./lib/midnight";
 import { analytics } from "./lib/analytics";
 import { initSentry, captureException } from "./lib/sentry";
 
@@ -56,11 +55,11 @@ export default function App() {
     initSentry();
     analytics.init();
 
-    // Fetch latest ledger
+    // Fetch latest block sequence on Midnight Network
     rpcServer
       .getLatestLedger()
       .then((res) => setLedgerSequence(res.sequence))
-      .catch((err) => console.warn("Failed to fetch ledger sequence:", err));
+      .catch((err) => console.warn("Failed to fetch Midnight ledger sequence:", err));
   }, []);
 
   useEffect(() => {
@@ -86,21 +85,21 @@ export default function App() {
     setTxSuccess(null);
 
     try {
-      const budgetInStroops = BigInt(Math.floor(parseFloat(data.amount) * 10_000_000));
+      const budgetInTokens = BigInt(Math.floor(parseFloat(data.amount)));
       const deadlineSec = BigInt(Math.floor(new Date(data.deadlineDate).getTime() / 1000));
 
       const args = [
-        new Address(address).toScVal(),
-        new Address(data.freelancer).toScVal(),
-        new Address(data.token).toScVal(),
-        nativeToScVal(budgetInStroops, { type: "i128" }),
-        nativeToScVal(data.description, { type: "string" }),
-        nativeToScVal(deadlineSec, { type: "u64" }),
+        address,
+        data.freelancer,
+        data.token,
+        budgetInTokens.toString(),
+        data.description,
+        deadlineSec.toString(),
       ];
 
       await callContractMethod(address, ESCROW_CONTRACT_ID, "create_job", args, sign);
 
-      setTimedAlerts("⚡ Escrow gig listing created on Stellar Testnet!", null);
+      setTimedAlerts("⚡ Compact Escrow gig created on Midnight Network!", null);
       analytics.trackJobCreated(Date.now(), address, data.freelancer, data.amount);
       await refreshJobs();
       setActiveTab("marketplace");
@@ -120,9 +119,9 @@ export default function App() {
     setTxSuccess(null);
 
     try {
-      const args = [nativeToScVal(BigInt(jobId), { type: "u64" })];
+      const args = [jobId];
       await callContractMethod(address, ESCROW_CONTRACT_ID, "fund_job", args, sign);
-      setTimedAlerts(`✓ Job #${jobId} funded! Tokens locked in Soroban escrow.`, null);
+      setTimedAlerts(`✓ Job #${jobId} funded! tDUST tokens locked in Midnight Compact escrow.`, null);
       analytics.trackJobFunded(jobId, address);
       await refreshJobs();
     } catch (err) {
@@ -140,9 +139,9 @@ export default function App() {
     setTxSuccess(null);
 
     try {
-      const args = [nativeToScVal(BigInt(jobId), { type: "u64" })];
-      await callContractMethod(address, ESCROW_CONTRACT_ID, "complete_job", args, sign);
-      setTimedAlerts(`✓ Job #${jobId} completed. Escrow funds released to freelancer!`, null);
+      const args = [jobId];
+      await callContractMethod(address, ESCROW_CONTRACT_ID, "release_payment", args, sign);
+      setTimedAlerts(`✓ Job #${jobId} completed. Escrow funds released to freelancer on Midnight!`, null);
       analytics.trackJobCompleted(jobId, address);
       await refreshJobs();
     } catch (err) {
@@ -160,7 +159,7 @@ export default function App() {
     setTxSuccess(null);
 
     try {
-      const args = [nativeToScVal(BigInt(jobId), { type: "u64" })];
+      const args = [jobId];
       await callContractMethod(address, ESCROW_CONTRACT_ID, "refund_job", args, sign);
       setTimedAlerts(`✓ Job #${jobId} timelock refund claimed successfully!`, null);
       await refreshJobs();
@@ -179,12 +178,9 @@ export default function App() {
     setTxSuccess(null);
 
     try {
-      const args = [
-        nativeToScVal(BigInt(jobId), { type: "u64" }),
-        nativeToScVal(score, { type: "u32" }),
-      ];
-      await callContractMethod(address, ESCROW_CONTRACT_ID, "submit_rating", args, sign);
-      setTimedAlerts(`⭐ Submitted atomic cross-contract rating of ${score} stars!`, null);
+      const args = [jobId, score];
+      await callContractMethod(address, ESCROW_CONTRACT_ID, "release_payment", args, sign);
+      setTimedAlerts(`⭐ Submitted atomic Compact rating of ${score} stars on Midnight Network!`, null);
       analytics.trackRatingSubmitted(jobId, score);
       await refreshJobs();
     } catch (err) {
@@ -208,7 +204,7 @@ export default function App() {
   const completedCount = jobs.filter((j) => j.status === "Completed").length;
 
   return (
-    <div className="min-h-screen bg-[#05070f] text-slate-300 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950">
+    <div className="min-h-screen bg-[#05070f] text-slate-300 flex flex-col font-sans selection:bg-purple-500 selection:text-slate-950">
       {/* Header */}
       <Navbar
         address={wallet.address}
@@ -230,13 +226,13 @@ export default function App() {
           <div className="flex flex-col">
             <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Total Volume</span>
             <span className="text-xl font-black text-gradient-cyan font-mono">
-              {totalVolume.toLocaleString()} <span className="text-xs text-slate-400 font-sans">XLM</span>
+              {totalVolume.toLocaleString()} <span className="text-xs text-slate-400 font-sans">tDUST</span>
             </span>
           </div>
 
           <div className="flex flex-col">
             <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Active Escrows</span>
-            <span className="text-xl font-black text-cyan-400 font-mono">
+            <span className="text-xl font-black text-purple-400 font-mono">
               {activeEscrowsCount} <span className="text-xs text-slate-400 font-sans">Gigs</span>
             </span>
           </div>
@@ -249,23 +245,23 @@ export default function App() {
           </div>
 
           <div className="flex flex-col">
-            <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Soroban Network</span>
+            <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Midnight Network</span>
             <span className="text-xs font-mono font-bold text-white flex items-center gap-1.5 mt-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              Stellar Testnet
+              <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+              Midnight Testnet (Devnet)
             </span>
           </div>
         </div>
 
         {/* Global Contract Config Check */}
         {!isConfigured && (
-          <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-2xl text-xs text-amber-300 font-semibold flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div className="bg-purple-500/10 border border-purple-500/30 p-4 rounded-2xl text-xs text-purple-300 font-semibold flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <span>
-              ⚠️ <strong>Contracts Not Configured:</strong> Soroban Escrow contract ID is missing. Deploy contracts using <code>deploy.sh</code> or set <code>.env.local</code>.
+              ⚠️ <strong>Contracts Not Configured:</strong> Midnight Escrow contract ID is missing. Deploy contracts using <code>deploy-midnight.ps1</code> or set <code>.env.local</code>.
             </span>
             <button
               onClick={() => setIsOnboardingOpen(true)}
-              className="text-xs bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-extrabold px-4 py-2 rounded-xl transition"
+              className="text-xs bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 font-extrabold px-4 py-2 rounded-xl transition"
             >
               Onboarding Setup Guide →
             </button>
@@ -296,16 +292,16 @@ export default function App() {
             <div className="flex justify-between items-center">
               <div>
                 <h2 className="text-2xl font-black tracking-tight text-gradient-cyan">
-                  🌐 AstraTrust Marketplace
+                  🌐 ZyrexEscrow Marketplace
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5 font-mono">
-                  Browse and interact with active, completed, and draft smart escrow contracts on Stellar.
+                  Browse and interact with active, completed, and draft zero-knowledge escrow contracts on Midnight.
                 </p>
               </div>
 
               <button
                 onClick={refreshJobs}
-                className="text-xs font-bold text-cyan-400 hover:text-cyan-300 transition flex items-center gap-1 font-mono bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800"
+                className="text-xs font-bold text-purple-400 hover:text-purple-300 transition flex items-center gap-1 font-mono bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800"
               >
                 <span>🔄</span> Refresh
               </button>
@@ -350,18 +346,18 @@ export default function App() {
                 💼 My Escrows Dashboard
               </h2>
               <p className="text-xs text-slate-400 mt-0.5 font-mono">
-                Escrow contracts where your connected wallet ({address ? `${address.slice(0,6)}…${address.slice(-4)}` : "Not connected"}) is Buyer Client or Freelancer.
+                Escrow contracts where your connected wallet ({address ? `${address.slice(0,8)}…${address.slice(-6)}` : "Not connected"}) is Buyer Client or Freelancer.
               </p>
             </div>
 
             {!address ? (
               <div className="glass-panel p-10 rounded-2xl text-center flex flex-col items-center gap-3">
-                <p className="text-sm font-bold text-slate-200">Connect your Freighter wallet to view your escrows.</p>
+                <p className="text-sm font-bold text-slate-200">Connect your Midnight Lace wallet to view your escrows.</p>
                 <button
                   onClick={wallet.connect}
-                  className="bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500 text-slate-950 font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-[0_0_20px_rgba(0,242,254,0.3)]"
+                  className="bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 text-slate-950 font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-[0_0_20px_rgba(168,85,247,0.3)]"
                 >
-                  Connect Wallet
+                  Connect Lace Wallet
                 </button>
               </div>
             ) : (
@@ -389,10 +385,10 @@ export default function App() {
             />
 
             <div className="glass-panel p-4 rounded-2xl text-[10px] text-slate-400 flex flex-col gap-1.5 font-mono border border-slate-800">
-              <span className="font-bold text-cyan-400 font-sans">Stellar Testnet Status:</span>
-              <span className="break-all">RPC URL: {SOROBAN_RPC_URL}</span>
+              <span className="font-bold text-purple-400 font-sans">Midnight Network Status:</span>
+              <span className="break-all">RPC URL: {MIDNIGHT_RPC_URL}</span>
               <span className="break-all">
-                Escrow Contract ID: {ESCROW_CONTRACT_ID || "Not Deployed"}
+                Compact Escrow Contract ID: {ESCROW_CONTRACT_ID || "Not Deployed"}
               </span>
             </div>
           </div>
@@ -435,4 +431,3 @@ export default function App() {
     </div>
   );
 }
-

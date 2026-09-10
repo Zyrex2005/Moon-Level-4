@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-2xl sticky top-0 z-40">
+    <header className="border-b border-purple-900/40 bg-slate-950/85 backdrop-blur-2xl sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center gap-4">
         {/* Brand & Network Status */}
         <div className="flex items-center gap-3">
@@ -47,17 +47,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => onSelectTab("marketplace")}
             className="flex items-center gap-2.5 cursor-pointer group"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-sky-500 to-violet-600 flex items-center justify-center text-slate-950 font-black text-base shadow-[0_0_20px_rgba(0,242,254,0.4)] group-hover:scale-105 transition">
-              ✦
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-500 via-indigo-500 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-base shadow-[0_0_20px_rgba(168,85,247,0.4)] group-hover:scale-105 transition">
+              🌙
             </div>
-            <h1 className="text-xl font-extrabold tracking-tight text-white font-sans group-hover:text-cyan-400 transition">
-              Astra<span className="text-gradient-cyan">Trust</span>
+            <h1 className="text-xl font-extrabold tracking-tight text-white font-sans group-hover:text-purple-400 transition">
+              Zyrex<span className="text-gradient-cyan">Escrow</span>
             </h1>
           </div>
 
-          <div className="hidden sm:flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 px-3 py-1 rounded-full text-[10px] font-semibold text-slate-300 font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Stellar Soroban Testnet</span>
+          <div className="hidden sm:flex items-center gap-1.5 bg-slate-900/90 border border-purple-900/50 px-3 py-1 rounded-full text-[10px] font-semibold text-purple-300 font-mono">
+            <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+            <span>Midnight Testnet (Devnet)</span>
             {ledgerSequence ? (
               <span className="text-slate-500">#{ledgerSequence}</span>
             ) : null}
@@ -74,7 +74,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => onSelectTab(item.id)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                   isActive
-                    ? "bg-gradient-to-r from-cyan-500/20 to-violet-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(0,242,254,0.15)]"
+                    ? "bg-gradient-to-r from-purple-500/20 to-cyan-500/20 text-purple-300 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.15)]"
                     : "text-slate-400 hover:text-slate-100 hover:bg-slate-800/60"
                 }`}
               >
@@ -88,18 +88,18 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Desktop Right Side Tools */}
         <div className="hidden md:flex items-center gap-3">
           <a
-            href="https://laboratory.stellar.org/#account-creator?network=testnet"
+            href="https://midnight.network/"
             target="_blank"
             rel="noreferrer"
-            className="text-[10px] font-bold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full hover:bg-amber-500/20 transition flex items-center gap-1 font-mono"
-            title="Get free Testnet XLM"
+            className="text-[10px] font-bold text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 rounded-full hover:bg-purple-500/20 transition flex items-center gap-1 font-mono"
+            title="Get free Testnet tDUST"
           >
-            <span>🚰</span> Faucet ↗
+            <span>🚰</span> Midnight Faucet ↗
           </a>
 
           <button
             onClick={onOpenOnboarding}
-            className="text-xs font-semibold text-slate-400 hover:text-cyan-400 transition"
+            className="text-xs font-semibold text-slate-400 hover:text-purple-400 transition"
           >
             📖 Guide
           </button>
@@ -118,7 +118,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="lg:hidden flex items-center gap-2">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-slate-100 hover:text-cyan-400 focus:outline-none text-xl"
+            className="p-2 text-slate-100 hover:text-purple-400 focus:outline-none text-xl"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? "✕" : "☰"}
@@ -141,7 +141,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }}
                   className={`px-3 py-2.5 rounded-xl text-xs font-semibold transition text-left flex items-center gap-2 ${
                     isActive
-                      ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
+                      ? "bg-purple-500/20 text-purple-400 border border-purple-500/30"
                       : "bg-slate-900 text-slate-300"
                   }`}
                 >
@@ -160,15 +160,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
               className="text-xs font-semibold text-slate-300 py-1.5"
             >
-              📖 AstraTrust Setup Guide
+              📖 Midnight Guide
             </button>
             <a
-              href="https://laboratory.stellar.org/#account-creator?network=testnet"
+              href="https://midnight.network/"
               target="_blank"
               rel="noreferrer"
-              className="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full"
+              className="text-xs font-bold text-purple-400 bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-full"
             >
-              🚰 Testnet Faucet ↗
+              🚰 tDUST Faucet ↗
             </a>
           </div>
 
@@ -187,4 +187,3 @@ export const Navbar: React.FC<NavbarProps> = ({
     </header>
   );
 };
-

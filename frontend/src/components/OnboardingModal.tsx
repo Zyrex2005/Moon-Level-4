@@ -21,7 +21,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xl animate-fade-in">
-      <div className="glass-panel border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl flex flex-col gap-6 relative text-white">
+      <div className="glass-panel border border-purple-900/60 rounded-2xl max-w-lg w-full p-6 shadow-2xl flex flex-col gap-6 relative text-white">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold transition"
@@ -32,16 +32,16 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
         {/* Modal Header */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-400 via-sky-400 to-violet-600 flex items-center justify-center text-slate-950 font-black text-base shadow-[0_0_20px_rgba(0,242,254,0.4)]">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 via-indigo-500 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-base shadow-[0_0_20px_rgba(168,85,247,0.4)]">
             {step}
           </div>
           <div>
             <h2 className="text-xl font-black tracking-tight text-gradient-cyan">
-              {step === 1 && "Welcome to AstraTrust Protocol"}
-              {step === 2 && "Connect Freighter Wallet"}
-              {step === 3 && "How Escrow & Reputation Work"}
+              {step === 1 && "Welcome to ZyrexEscrow on Midnight"}
+              {step === 2 && "Connect Midnight Lace Wallet"}
+              {step === 3 && "ZK Escrow & Reputation Engine"}
             </h2>
-            <p className="text-xs text-slate-400 font-mono">Step {step} of 3 — Quick Setup Guide</p>
+            <p className="text-xs text-slate-400 font-mono">Step {step} of 3 — Midnight Quick Start</p>
           </div>
         </div>
 
@@ -49,17 +49,17 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
         {step === 1 && (
           <div className="flex flex-col gap-4 text-xs text-slate-300">
             <p className="leading-relaxed">
-              <strong>AstraTrust Protocol</strong> is a next-generation decentralized freelance marketplace built on the Stellar Soroban smart contract platform. Funds are locked in non-custodial escrow contracts with automated timelock protection.
+              <strong>ZyrexEscrow Protocol</strong> is a privacy-first Web3 freelance marketplace built on the <strong>Midnight Network</strong> (Cardano ecosystem / Input Output zero-knowledge smart contract blockchain). Funds are secured in <strong>Compact</strong> zero-knowledge escrow contracts with automated release and timelock protection.
             </p>
             <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 flex flex-col gap-2.5">
-              <div className="flex items-center gap-2 text-emerald-400 font-semibold">
-                <span>✓</span> Non-Custodial Smart Contract Protection
+              <div className="flex items-center gap-2 text-purple-400 font-semibold">
+                <span>✦</span> Zero-Knowledge Private Client & Amount Shielding
               </div>
               <div className="flex items-center gap-2 text-cyan-400 font-semibold">
-                <span>✓</span> Immutable On-Chain Freelancer Reputation Scores
+                <span>✦</span> Compact Smart Contracts (`zyrex_escrow.compact`)
               </div>
-              <div className="flex items-center gap-2 text-amber-400 font-semibold">
-                <span>✓</span> Automated Timed Refunds & Dispute Safeguards
+              <div className="flex items-center gap-2 text-emerald-400 font-semibold">
+                <span>✦</span> Verifiable On-Chain Freelancer Reputation Scores
               </div>
             </div>
           </div>
@@ -69,46 +69,46 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
         {step === 2 && (
           <div className="flex flex-col gap-4 text-xs text-slate-300">
             <p className="leading-relaxed">
-              AstraTrust Protocol connects to the <strong>Freighter Wallet</strong> browser extension on <strong>Stellar Testnet</strong>.
+              ZyrexEscrow Protocol connects to the <strong>Midnight Lace Wallet</strong> extension running on <strong>Midnight Devnet / Testnet</strong>.
             </p>
 
             {!isWalletInstalled ? (
-              <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl text-xs text-amber-300 flex flex-col gap-2">
-                <span className="font-bold">⚠️ Freighter Extension Not Detected</span>
-                <span>Install Freighter to sign transactions and create jobs on Stellar Testnet.</span>
+              <div className="bg-purple-500/10 border border-purple-500/30 p-4 rounded-xl text-xs text-purple-300 flex flex-col gap-2">
+                <span className="font-bold">🌙 Midnight Lace Extension Guide</span>
+                <span>Install Midnight Lace Wallet to generate zero-knowledge proofs and sign tDUST escrow transactions.</span>
                 <a
-                  href="https://www.freighter.app/"
+                  href="https://midnight.network/"
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-2 inline-block text-center bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold py-2 px-4 rounded-xl transition text-xs shadow-[0_0_15px_rgba(251,191,36,0.3)]"
+                  className="mt-2 inline-block text-center bg-purple-500 hover:bg-purple-400 text-white font-extrabold py-2 px-4 rounded-xl transition text-xs shadow-[0_0_15px_rgba(168,85,247,0.3)]"
                 >
-                  Download Freighter Extension ↗
+                  Download Midnight Lace Wallet ↗
                 </a>
               </div>
             ) : isConnected ? (
               <div className="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl text-xs text-emerald-400 font-semibold flex items-center gap-2">
-                <span>✓</span> Freighter Wallet Connected Successfully!
+                <span>✓</span> Midnight Lace Wallet Connected Successfully!
               </div>
             ) : (
               <div className="flex flex-col gap-3">
                 <button
                   onClick={onConnectWallet}
-                  className="w-full bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500 hover:from-cyan-300 hover:to-violet-400 text-slate-950 font-extrabold py-2.5 px-4 rounded-xl transition text-xs shadow-[0_0_20px_rgba(0,242,254,0.3)]"
+                  className="w-full bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 hover:from-purple-400 hover:to-cyan-300 text-slate-950 font-extrabold py-2.5 px-4 rounded-xl transition text-xs shadow-[0_0_20px_rgba(168,85,247,0.3)]"
                 >
-                  Connect Freighter Wallet Now
+                  Connect Midnight Lace Wallet Now
                 </button>
               </div>
             )}
 
             <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex justify-between items-center text-[10px] font-mono">
-              <span className="text-slate-400">Need free Testnet XLM?</span>
+              <span className="text-slate-400">Need free Testnet tDUST?</span>
               <a
-                href="https://laboratory.stellar.org/#account-creator?network=testnet"
+                href="https://midnight.network/"
                 target="_blank"
                 rel="noreferrer"
-                className="text-amber-400 font-bold hover:underline"
+                className="text-cyan-400 font-bold hover:underline"
               >
-                Stellar Friendbot Faucet ↗
+                Midnight Testnet Faucet ↗
               </a>
             </div>
           </div>
@@ -118,13 +118,13 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
         {step === 3 && (
           <div className="flex flex-col gap-4 text-xs text-slate-300">
             <p className="leading-relaxed">
-              When a job is completed, payment is released and an <strong>atomic cross-contract invocation</strong> updates the freelancer's reputation score on-chain in the same transaction!
+              When a job is completed, payment is released in <strong>tDUST</strong> and an <strong>atomic Compact circuit call</strong> updates the freelancer's trust score on Midnight Network zero-knowledge ledger.
             </p>
             <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 flex flex-col gap-2 font-mono text-[10px]">
-              <span className="text-cyan-400">1. Client posts gig & locks tokens in Escrow</span>
-              <span className="text-amber-400">2. Freelancer completes deliverable requirements</span>
-              <span className="text-emerald-400">3. Client releases payment + submits 1-5★ rating</span>
-              <span className="text-violet-400">4. Escrow invokes Reputation contract atomically</span>
+              <span className="text-purple-400">1. Client creates gig & locks tDUST in Compact Escrow</span>
+              <span className="text-cyan-400">2. Freelancer submits deliverable proof on Midnight</span>
+              <span className="text-emerald-400">3. Client releases payment + submits 1-5★ ZK rating</span>
+              <span className="text-indigo-400">4. Escrow invokes reputation Compact contract atomically</span>
             </div>
           </div>
         )}
@@ -144,7 +144,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               <span
                 key={i}
                 className={`w-2 h-2 rounded-full transition ${
-                  step === i ? "bg-cyan-400 shadow-[0_0_10px_rgba(0,242,254,0.5)]" : "bg-slate-800"
+                  step === i ? "bg-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.5)]" : "bg-slate-800"
                 }`}
               />
             ))}
@@ -153,14 +153,14 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
           {step < 3 ? (
             <button
               onClick={() => setStep((s) => Math.min(3, s + 1))}
-              className="bg-slate-900 hover:bg-slate-800 text-cyan-400 px-4 py-1.5 rounded-xl text-xs font-bold transition border border-cyan-500/30"
+              className="bg-slate-900 hover:bg-slate-800 text-purple-400 px-4 py-1.5 rounded-xl text-xs font-bold transition border border-purple-500/30"
             >
               Next →
             </button>
           ) : (
             <button
               onClick={onClose}
-              className="bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500 text-slate-950 px-4 py-1.5 rounded-xl text-xs font-extrabold transition shadow-[0_0_15px_rgba(0,242,254,0.3)]"
+              className="bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 text-slate-950 px-4 py-1.5 rounded-xl text-xs font-extrabold transition shadow-[0_0_15px_rgba(168,85,247,0.3)]"
             >
               Get Started 🚀
             </button>
@@ -170,4 +170,3 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
     </div>
   );
 };
-

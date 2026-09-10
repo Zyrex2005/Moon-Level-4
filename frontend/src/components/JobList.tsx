@@ -236,7 +236,7 @@ export function JobList({
                     <span className="text-2xl font-black text-gradient-cyan font-mono">
                       {job.amount}
                     </span>
-                    <span className="text-[10px] text-slate-400 font-mono block">SAC Tokens</span>
+                    <span className="text-[10px] text-purple-300 font-mono block">tDUST Tokens</span>
                   </div>
                 </div>
 

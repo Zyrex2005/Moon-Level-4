@@ -1,0 +1,35 @@
+// Zyrex Modular Escrow Contract - Midnight Network
+pragma language_version >= 0.1.0;
+
+import CompactStandardLibrary;
+
+export ledger struct ModularEscrow {
+  id: Bytes<32>,
+  payer: Address,
+  payee: Address,
+  amount: Uint<64>,
+  released: Boolean
+}
+
+export ledger escrows: Map<Bytes<32>, ModularEscrow>;
+
+export circuit deposit(id: Bytes<32>, payee: Address, amount: Uint<64>): Void {
+  assert !escrows.member(id) "Escrow already exists";
+  const e = ModularEscrow {
+    id: id,
+    payer: caller(),
+    payee: payee,
+    amount: amount,
+    released: false
+  };
+  escrows.insert(id, e);
+}
+
+export circuit release(id: Bytes<32>): Void {
+  assert escrows.member(id) "Escrow not found";
+  var e: ModularEscrow = escrows.lookup(id);
+  assert caller() == e.payer "Only payer can release funds";
+  assert !e.released "Already released";
+  e.released = true;
+  escrows.insert(id, e);
+}

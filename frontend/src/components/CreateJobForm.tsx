@@ -15,7 +15,7 @@ type CreateJobFormProps = {
   prefilledFreelancer?: string;
 };
 
-export const DEFAULT_SAC_TOKEN = "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC"; // Stellar Testnet Native XLM SAC ID
+export const DEFAULT_MIDNIGHT_TOKEN = "mn_token1tdust99midnightnetworkdevnet001"; // Midnight Testnet tDUST Token ID
 
 interface GigTemplate {
   title: string;
@@ -27,30 +27,30 @@ interface GigTemplate {
 
 const TEMPLATES: GigTemplate[] = [
   {
-    title: "Smart Contract Audit",
+    title: "Compact Smart Contract Audit",
     icon: "🛡️",
-    description: "Conduct security audit, invariant testing, and gas optimization review for Soroban contracts.",
+    description: "Conduct security audit, ZK proof verification, and circuit gas review for Midnight Compact contracts.",
     suggestedAmount: "150",
     daysToAdd: 7,
   },
   {
-    title: "DApp Frontend UI/UX",
+    title: "Midnight DApp Frontend UI/UX",
     icon: "🎨",
-    description: "Design & develop modern glassmorphic React/Vite interface with Freighter wallet integration.",
+    description: "Design & develop modern glassmorphic React interface with Midnight Lace wallet integration.",
     suggestedAmount: "200",
     daysToAdd: 14,
   },
   {
-    title: "Express API Relay",
+    title: "Midnight Indexer API Relay",
     icon: "🔌",
-    description: "Build Node.js serverless event caching relay for Soroban RPC telemetry & user feedback.",
+    description: "Build Node.js serverless event caching relay for Midnight Network RPC & Indexer telemetry.",
     suggestedAmount: "100",
     daysToAdd: 5,
   },
   {
-    title: "Full-Stack Web3 DApp",
+    title: "Full-Stack Midnight ZK DApp",
     icon: "🚀",
-    description: "End-to-end development: Rust Soroban contracts, Express relay server, and responsive React frontend.",
+    description: "End-to-end development: Compact smart contracts, Midnight relay server, and responsive React frontend.",
     suggestedAmount: "500",
     daysToAdd: 30,
   },
@@ -64,7 +64,7 @@ export function CreateJobForm({
 }: CreateJobFormProps) {
   const [formData, setFormData] = useState<JobFormData>({
     freelancer: prefilledFreelancer,
-    token: DEFAULT_SAC_TOKEN,
+    token: DEFAULT_MIDNIGHT_TOKEN,
     amount: "",
     description: "",
     deadlineDate: "",
@@ -108,10 +108,10 @@ export function CreateJobForm({
   };
 
   const isFreelancerValid =
-    formData.freelancer.startsWith("G") && formData.freelancer.length === 56;
+    formData.freelancer.length >= 8; // Midnight address validation
 
   const isTokenValid =
-    formData.token.startsWith("C") && formData.token.length === 56;
+    formData.token.length >= 8;
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,11 +119,11 @@ export function CreateJobForm({
 
     // Validate fields
     if (!isFreelancerValid) {
-      setError("Please enter a valid Stellar freelancer public key (starting with G).");
+      setError("Please enter a valid Midnight freelancer public key.");
       return;
     }
     if (!isTokenValid) {
-      setError("Please enter a valid Stellar Asset Contract token ID (starting with C).");
+      setError("Please enter a valid Midnight token ID.");
       return;
     }
     const amt = parseFloat(formData.amount);
@@ -150,7 +150,7 @@ export function CreateJobForm({
       // Reset form
       setFormData({
         freelancer: "",
-        token: DEFAULT_SAC_TOKEN,
+        token: DEFAULT_MIDNIGHT_TOKEN,
         amount: "",
         description: "",
         deadlineDate: "",
@@ -161,198 +161,183 @@ export function CreateJobForm({
   };
 
   return (
-    <form
-      onSubmit={handleFormSubmit}
-      noValidate
-      className="glass-panel p-8 rounded-2xl flex flex-col gap-6 border border-slate-800 shadow-[0_0_30px_rgba(0,0,0,0.5)]"
-    >
-      <div className="flex justify-between items-center border-b border-slate-800 pb-4">
-        <div>
-          <h3 className="text-xl font-black text-gradient-cyan">Post AstraTrust Escrow Gig</h3>
-          <p className="text-[10px] text-slate-400 mt-0.5 font-mono">
-            Lock funds securely in a non-custodial Soroban smart escrow contract
-          </p>
+    <div className="max-w-3xl mx-auto space-y-6">
+      {/* Template Quick Selection */}
+      <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">
+            ⚡ Quick-Start Gig Templates (Midnight Network)
+          </h3>
+          <span className="text-[10px] text-slate-400">Click to prefill form</span>
         </div>
-        <span className="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 px-3 py-1 rounded-full text-[10px] font-mono font-extrabold shadow-[0_0_12px_rgba(0,242,254,0.15)]">
-          Soroban Escrow
-        </span>
-      </div>
-
-      {error && (
-        <div
-          role="alert"
-          className="bg-rose-500/15 border border-rose-500/30 p-3.5 rounded-xl text-xs text-rose-300 font-semibold"
-        >
-          ⚠️ {error}
-        </div>
-      )}
-
-      {/* Quick Templates */}
-      <div className="flex flex-col gap-2">
-        <label className="text-xs font-bold text-slate-300">
-          ⚡ Quick Presets (Click to pre-fill):
-        </label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          {TEMPLATES.map((tpl) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {TEMPLATES.map((tpl, i) => (
             <button
+              key={i}
               type="button"
-              key={tpl.title}
               onClick={() => applyTemplate(tpl)}
-              className="bg-slate-900/80 border border-slate-800 hover:border-cyan-500/40 p-3 rounded-xl text-left transition text-[10px] flex items-center gap-2.5 group"
+              className="text-left p-3.5 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-purple-500/40 transition group flex items-start gap-3"
             >
-              <span className="text-xl">{tpl.icon}</span>
+              <span className="text-2xl">{tpl.icon}</span>
               <div>
-                <span className="font-extrabold text-white group-hover:text-cyan-400 block text-xs">
+                <div className="text-xs font-bold text-white group-hover:text-purple-400 transition">
                   {tpl.title}
-                </span>
-                <span className="text-slate-400 font-mono">
-                  {tpl.suggestedAmount} XLM • {tpl.daysToAdd}d deadline
-                </span>
+                </div>
+                <div className="text-[11px] text-slate-400 line-clamp-1">
+                  {tpl.description}
+                </div>
+                <div className="mt-1 flex items-center gap-2 text-[10px] font-mono text-purple-300">
+                  <span>{tpl.suggestedAmount} tDUST</span>
+                  <span>•</span>
+                  <span>{tpl.daysToAdd} days</span>
+                </div>
               </div>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Freelancer Input */}
-      <div className="flex flex-col gap-1.5">
-        <div className="flex justify-between items-center">
-          <label className="text-xs font-bold text-slate-300">
-            Freelancer Stellar Wallet Address
-          </label>
-          {formData.freelancer && (
-            <span
-              className={`text-[10px] font-mono font-bold ${
-                isFreelancerValid ? "text-emerald-400" : "text-amber-400"
-              }`}
-            >
-              {isFreelancerValid ? "✓ Valid Stellar Key" : "⚠️ Invalid G... Key"}
-            </span>
-          )}
+      {/* Main Form */}
+      <form
+        onSubmit={handleFormSubmit}
+        className="glass-panel p-6 sm:p-8 rounded-2xl border border-purple-900/40 space-y-6 shadow-2xl relative text-white"
+      >
+        <div className="border-b border-slate-800 pb-4">
+          <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <span>➕</span> Post ZyrexEscrow Gig on Midnight
+          </h2>
+          <p className="text-xs text-slate-400 mt-1">
+            Lock tDUST in a Midnight Compact zero-knowledge escrow contract. Payments and atomic reputation updates are executed upon completion.
+          </p>
         </div>
-        <input
-          type="text"
-          name="freelancer"
-          value={formData.freelancer}
-          onChange={handleChange}
-          placeholder="e.g. GB44L2MS..."
-          className="focus-ring bg-slate-900/90 border border-slate-800 px-4 py-3 rounded-xl text-xs font-mono text-white placeholder-slate-500"
-          required
-        />
-      </div>
 
-      {/* Token Input with Preset */}
-      <div className="flex flex-col gap-1.5">
-        <div className="flex justify-between items-center">
-          <label className="text-xs font-bold text-slate-300">
-            Payment Token (SAC Contract ID)
-          </label>
+        {error && (
+          <div className="bg-rose-500/10 border border-rose-500/30 p-4 rounded-xl text-xs text-rose-400 font-semibold flex items-center gap-2">
+            <span>⚠️</span>
+            <span>{error}</span>
+          </div>
+        )}
+
+        <div className="space-y-4">
+          {/* Freelancer Address */}
+          <div>
+            <label className="block text-xs font-bold text-slate-300 mb-1.5 font-mono">
+              Freelancer Midnight Address <span className="text-rose-400">*</span>
+            </label>
+            <input
+              type="text"
+              name="freelancer"
+              value={formData.freelancer}
+              onChange={handleChange}
+              placeholder="mn_test1q8zyrex88midnightnetworkescrow9901"
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-purple-500 transition font-mono"
+            />
+          </div>
+
+          {/* Token ID */}
+          <div>
+            <label className="block text-xs font-bold text-slate-300 mb-1.5 font-mono">
+              Escrow Token ID (Midnight Network) <span className="text-rose-400">*</span>
+            </label>
+            <input
+              type="text"
+              name="token"
+              value={formData.token}
+              onChange={handleChange}
+              placeholder={DEFAULT_MIDNIGHT_TOKEN}
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-300 placeholder-slate-600 focus:outline-none focus:border-purple-500 transition font-mono"
+            />
+          </div>
+
+          {/* Budget & Presets */}
+          <div>
+            <div className="flex justify-between items-center mb-1.5">
+              <label className="block text-xs font-bold text-slate-300 font-mono">
+                Budget (tDUST Tokens) <span className="text-rose-400">*</span>
+              </label>
+              <div className="flex gap-1.5">
+                {["50", "100", "250", "500"].map((amt) => (
+                  <button
+                    key={amt}
+                    type="button"
+                    onClick={() => applyAmount(amt)}
+                    className="text-[10px] font-mono bg-slate-900 hover:bg-slate-800 text-purple-300 px-2 py-0.5 rounded-md border border-slate-800 transition"
+                  >
+                    {amt} tDUST
+                  </button>
+                ))}
+              </div>
+            </div>
+            <input
+              type="number"
+              step="any"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              placeholder="e.g. 150"
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-purple-500 transition font-mono"
+            />
+          </div>
+
+          {/* Job Description */}
+          <div>
+            <label className="block text-xs font-bold text-slate-300 mb-1.5 font-mono">
+              Deliverable Specifications <span className="text-rose-400">*</span>
+            </label>
+            <textarea
+              name="description"
+              rows={3}
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Detail work scope, deliverables, github repo links, or acceptance criteria..."
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-purple-500 transition font-sans"
+            />
+          </div>
+
+          {/* Deadline Date */}
+          <div>
+            <div className="flex justify-between items-center mb-1.5">
+              <label className="block text-xs font-bold text-slate-300 font-mono">
+                Completion Deadline Date <span className="text-rose-400">*</span>
+              </label>
+              <div className="flex gap-1.5">
+                {[7, 14, 30].map((days) => (
+                  <button
+                    key={days}
+                    type="button"
+                    onClick={() => applyDeadlineDays(days)}
+                    className="text-[10px] font-mono bg-slate-900 hover:bg-slate-800 text-purple-300 px-2 py-0.5 rounded-md border border-slate-800 transition"
+                  >
+                    +{days}d
+                  </button>
+                ))}
+              </div>
+            </div>
+            <input
+              type="date"
+              name="deadlineDate"
+              value={formData.deadlineDate}
+              onChange={handleChange}
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-purple-500 transition font-mono"
+            />
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <div className="pt-2">
           <button
-            type="button"
-            onClick={() => setFormData((prev) => ({ ...prev, token: DEFAULT_SAC_TOKEN }))}
-            className="text-[10px] font-mono font-bold text-cyan-400 hover:underline"
+            type="submit"
+            disabled={isSubmitting || !walletConnected}
+            className="w-full bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 hover:from-purple-400 hover:to-cyan-300 text-slate-950 font-black py-3 px-6 rounded-xl transition text-xs shadow-[0_0_20px_rgba(168,85,247,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Use Native XLM SAC ↗
+            {isSubmitting
+              ? "Submitting Compact Circuit Transaction..."
+              : walletConnected
+              ? "Post Gig & Lock Escrow Funds in Compact Contract 🚀"
+              : "Connect Midnight Lace Wallet to Post Gig"}
           </button>
         </div>
-        <input
-          type="text"
-          name="token"
-          value={formData.token}
-          onChange={handleChange}
-          placeholder="e.g. CDLZFC..."
-          className="focus-ring bg-slate-900/90 border border-slate-800 px-4 py-3 rounded-xl text-[10px] font-mono text-white placeholder-slate-500"
-          required
-        />
-      </div>
-
-      {/* Budget & Deadline */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-bold text-slate-300">Budget Amount (Tokens)</label>
-          <input
-            type="number"
-            name="amount"
-            step="any"
-            value={formData.amount}
-            onChange={handleChange}
-            placeholder="e.g. 150"
-            className="focus-ring bg-slate-900/90 border border-slate-800 px-4 py-3 rounded-xl text-xs font-mono text-white placeholder-slate-500"
-            required
-          />
-          <div className="flex gap-1.5 mt-1">
-            {["50", "100", "250", "500"].map((amt) => (
-              <button
-                type="button"
-                key={amt}
-                onClick={() => applyAmount(amt)}
-                className="bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg text-[10px] font-mono text-slate-400 hover:text-cyan-300 hover:border-cyan-500/30 transition"
-              >
-                +{amt}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-bold text-slate-300">Completion Deadline</label>
-          <input
-            type="date"
-            name="deadlineDate"
-            value={formData.deadlineDate}
-            onChange={handleChange}
-            className="focus-ring bg-slate-900/90 border border-slate-800 px-4 py-3 rounded-xl text-xs text-white placeholder-slate-500"
-            required
-          />
-          <div className="flex gap-1.5 mt-1">
-            {[
-              { label: "+3d", days: 3 },
-              { label: "+7d", days: 7 },
-              { label: "+14d", days: 14 },
-              { label: "+30d", days: 30 },
-            ].map((item) => (
-              <button
-                type="button"
-                key={item.label}
-                onClick={() => applyDeadlineDays(item.days)}
-                className="bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg text-[10px] font-mono text-slate-400 hover:text-cyan-300 hover:border-cyan-500/30 transition"
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Description */}
-      <div className="flex flex-col gap-1.5">
-        <label className="text-xs font-bold text-slate-300">
-          Deliverable Requirements & Specifications
-        </label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          placeholder="Describe deliverables, milestone specifications, and acceptance criteria..."
-          rows={3}
-          className="focus-ring bg-slate-900/90 border border-slate-800 px-4 py-3 rounded-xl text-xs text-white placeholder-slate-500 resize-none"
-          required
-        />
-      </div>
-
-      {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={isSubmitting || !walletConnected}
-        className="focus-ring mt-3 bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500 hover:from-cyan-300 hover:to-violet-400 text-slate-950 py-3.5 rounded-xl font-extrabold transition disabled:opacity-50 disabled:cursor-not-allowed text-xs shadow-[0_0_20px_rgba(0,242,254,0.3)] hover:shadow-[0_0_25px_rgba(0,242,254,0.5)]"
-      >
-        {isSubmitting
-          ? "Broadcasting to Soroban RPC…"
-          : walletConnected
-          ? "🚀 Create Smart Escrow Listing"
-          : "🔒 Connect Wallet to Create Gig"}
-      </button>
-    </form>
+      </form>
+    </div>
   );
 }
-

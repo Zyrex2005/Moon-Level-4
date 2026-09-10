@@ -39,7 +39,7 @@ export const AdminStats: React.FC<AdminStatsProps> = ({
     } catch (err) {
       console.warn("[AdminStats] Failed to fetch feedback from API server, reading local storage:", err);
       try {
-        const localItems = JSON.parse(localStorage.getItem("astratrust_feedback") || localStorage.getItem("zyrex_feedback") || "[]");
+        const localItems = JSON.parse(localStorage.getItem("zyrex_feedback") || "[]");
         setFeedbackList(localItems);
         if (localItems.length > 0) {
           const avg = localItems.reduce((acc: number, item: any) => acc + item.rating, 0) / localItems.length;
@@ -59,7 +59,7 @@ export const AdminStats: React.FC<AdminStatsProps> = ({
   const completedJobs = jobs.filter((j) => j.status === "Completed").length;
   const refundedJobs = jobs.filter((j) => j.status === "Refunded").length;
 
-  const totalVolumeStroops = jobs.reduce((acc, j) => acc + (parseFloat(j.amount) || 0), 0);
+  const totalVolumeTokens = jobs.reduce((acc, j) => acc + (parseFloat(j.amount) || 0), 0);
 
   const uniqueWallets = Array.from(
     new Set(jobs.flatMap((j) => [j.client, j.freelancer]))
@@ -76,18 +76,18 @@ export const AdminStats: React.FC<AdminStatsProps> = ({
   return (
     <div className="flex flex-col gap-6 animate-fade-in text-white">
       {/* Header */}
-      <div className="flex justify-between items-center border-b border-slate-800 pb-4">
+      <div className="flex justify-between items-center border-b border-purple-900/40 pb-4">
         <div>
           <h2 className="text-2xl font-black tracking-tight text-gradient-cyan">
-            📊 AstraTrust Protocol Telemetry & Analytics
+            📊 ZyrexEscrow Protocol Telemetry & Analytics
           </h2>
           <p className="text-xs text-slate-400 mt-0.5 font-mono">
-            Real-time on-chain metrics, Soroban smart contract performance, and user feedback logs
+            Real-time on-chain metrics, Midnight Compact contract performance, and user feedback logs
           </p>
         </div>
         <button
           onClick={fetchFeedback}
-          className="bg-slate-900/90 border border-slate-800 hover:border-cyan-500/40 text-cyan-400 px-4 py-2 rounded-xl text-xs font-bold transition shadow-[0_0_12px_rgba(0,242,254,0.1)]"
+          className="bg-slate-900/90 border border-purple-900/50 hover:border-purple-500/40 text-purple-300 px-4 py-2 rounded-xl text-xs font-bold transition shadow-[0_0_12px_rgba(168,85,247,0.1)]"
         >
           🔄 Refresh Telemetry
         </button>
@@ -105,10 +105,10 @@ export const AdminStats: React.FC<AdminStatsProps> = ({
 
         <div className="glass-panel p-6 rounded-2xl flex flex-col gap-1 border border-slate-800">
           <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">Total Escrow Volume</span>
-          <span className="text-3xl font-black text-amber-400 font-mono">
-            {totalVolumeStroops.toLocaleString()} <span className="text-xs text-slate-400">XLM</span>
+          <span className="text-3xl font-black text-purple-400 font-mono">
+            {totalVolumeTokens.toLocaleString()} <span className="text-xs text-slate-400">tDUST</span>
           </span>
-          <span className="text-[10px] text-slate-400 font-medium">Locked in non-custodial contracts</span>
+          <span className="text-[10px] text-slate-400 font-medium">Locked in Midnight ZK contracts</span>
         </div>
 
         <div className="glass-panel p-6 rounded-2xl flex flex-col gap-1 border border-slate-800">
@@ -140,60 +140,58 @@ export const AdminStats: React.FC<AdminStatsProps> = ({
             {uniqueWallets.map((addr) => (
               <div
                 key={addr}
-                className="bg-slate-900/90 border border-slate-800 p-3 rounded-xl text-cyan-300 break-all flex items-center justify-between"
+                className="bg-slate-900/90 border border-slate-800 p-3 rounded-xl text-purple-300 break-all flex items-center justify-between"
               >
                 <span>{addr}</span>
-                <span className="text-[10px] bg-cyan-500/10 text-cyan-300 px-2 py-0.5 rounded-md font-sans">Active</span>
+                <span className="text-[10px] bg-purple-500/10 text-purple-300 px-2 py-0.5 rounded-md font-sans">Active</span>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* User Feedback Table */}
+      {/* Feedback Logs Table */}
       <div className="glass-panel p-6 rounded-2xl flex flex-col gap-4 border border-slate-800">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <h3 className="text-base font-bold text-white">
-            Product Feedback Submissions ({feedbackList.length})
+            User Feedback Submissions ({filteredFeedback.length})
           </h3>
           <input
             type="text"
             placeholder="Search feedback..."
             value={feedbackSearch}
             onChange={(e) => setFeedbackSearch(e.target.value)}
-            className="focus-ring bg-slate-900/90 border border-slate-800 px-3.5 py-2 rounded-xl text-xs text-white placeholder-slate-500 w-full sm:w-56"
+            className="bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-xl text-xs text-white placeholder-slate-500 w-full sm:w-60 focus:outline-none"
           />
         </div>
 
         {loading ? (
-          <p className="text-xs text-slate-400 animate-pulse">Loading telemetry logs...</p>
+          <div className="p-6 text-center text-xs text-slate-400 animate-pulse">Loading feedback logs...</div>
         ) : filteredFeedback.length === 0 ? (
-          <p className="text-xs text-slate-400 italic">
-            No feedback entries found. Use the floating feedback widget to submit ratings!
-          </p>
+          <p className="text-xs text-slate-400 italic">No user feedback logs found.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+            <table className="w-full text-left text-xs font-sans">
               <thead>
-                <tr className="border-b border-slate-800 text-slate-400 uppercase font-mono text-[10px]">
-                  <th className="py-3 px-3">Rating</th>
-                  <th className="py-3 px-3">User Address</th>
-                  <th className="py-3 px-3">Comment / Review</th>
-                  <th className="py-3 px-3">Timestamp</th>
+                <tr className="border-b border-slate-800 text-slate-400 font-mono text-[10px] uppercase">
+                  <th className="py-2.5 px-3">Rating</th>
+                  <th className="py-2.5 px-3">Comment</th>
+                  <th className="py-2.5 px-3">Wallet Address</th>
+                  <th className="py-2.5 px-3">Timestamp</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80 font-sans">
-                {filteredFeedback.map((fb) => (
-                  <tr key={fb.id} className="hover:bg-slate-900/50 transition">
+              <tbody className="divide-y divide-slate-800/60">
+                {filteredFeedback.map((item) => (
+                  <tr key={item.id} className="hover:bg-slate-900/50 transition">
                     <td className="py-3 px-3 font-bold text-amber-400 font-mono">
-                      {fb.rating} ★
+                      {item.rating} ★
                     </td>
-                    <td className="py-3 px-3 font-mono text-slate-300 truncate max-w-[160px]">
-                      {fb.address}
+                    <td className="py-3 px-3 text-slate-200 max-w-xs">{item.comment}</td>
+                    <td className="py-3 px-3 font-mono text-purple-300 text-[11px]">
+                      {item.address.slice(0, 10)}…{item.address.slice(-6)}
                     </td>
-                    <td className="py-3 px-3 text-slate-200">{fb.comment || "—"}</td>
-                    <td className="py-3 px-3 text-slate-400 font-mono text-[10px]">
-                      {new Date(fb.timestamp).toLocaleString()}
+                    <td className="py-3 px-3 text-slate-400 text-[10px] font-mono">
+                      {new Date(item.timestamp).toLocaleString()}
                     </td>
                   </tr>
                 ))}
@@ -205,4 +203,3 @@ export const AdminStats: React.FC<AdminStatsProps> = ({
     </div>
   );
 };
-

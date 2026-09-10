@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useWallet } from "../hooks/useWallet";
 
 function truncateAddress(addr: string) {
-  return `${addr.slice(0, 4)}…${addr.slice(-4)}`;
+  if (addr.length <= 16) return addr;
+  return `${addr.slice(0, 8)}…${addr.slice(-6)}`;
 }
 
 type WalletButtonProps = {
@@ -37,24 +38,24 @@ export function WalletButton(props: WalletButtonProps) {
   if (isInstalled === false) {
     return (
       <a
-        href="https://www.freighter.app/"
+        href="https://midnight.network/"
         target="_blank"
         rel="noreferrer"
-        className="focus-ring border border-amber-500/40 bg-amber-500/10 px-4 py-2 text-xs rounded-xl font-bold text-amber-300 transition hover:bg-amber-500/20"
+        className="focus-ring border border-purple-500/40 bg-purple-500/10 px-4 py-2 text-xs rounded-xl font-bold text-purple-300 transition hover:bg-purple-500/20"
       >
-        ⚡ Install Freighter Wallet
+        🌙 Install Midnight Lace Wallet
       </a>
     );
   }
 
   if (address) {
     return (
-      <div className="flex items-center gap-2 bg-slate-900/90 border border-emerald-500/40 px-3.5 py-1.5 rounded-xl font-mono text-xs text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
-        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <div className="flex items-center gap-2 bg-slate-900/90 border border-purple-500/40 px-3.5 py-1.5 rounded-xl font-mono text-xs text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.15)]">
+        <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
         <button
           onClick={handleCopy}
           className="hover:underline font-bold"
-          title="Click to copy address"
+          title="Click to copy Midnight address"
         >
           {copied ? "Copied! ✓" : truncateAddress(address)}
         </button>
@@ -74,9 +75,9 @@ export function WalletButton(props: WalletButtonProps) {
       <button
         onClick={connect}
         disabled={isConnecting}
-        className="focus-ring bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500 hover:from-cyan-300 hover:to-violet-400 px-5 py-2 text-xs rounded-xl font-extrabold text-slate-950 transition disabled:cursor-wait disabled:opacity-60 shadow-[0_0_20px_rgba(0,242,254,0.3)] hover:shadow-[0_0_25px_rgba(0,242,254,0.5)]"
+        className="focus-ring bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 hover:from-purple-400 hover:to-cyan-300 px-5 py-2 text-xs rounded-xl font-extrabold text-slate-950 transition disabled:cursor-wait disabled:opacity-60 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)]"
       >
-        {isConnecting ? "Connecting Wallet…" : "Connect Wallet"}
+        {isConnecting ? "Connecting Midnight Wallet…" : "Connect Lace Wallet"}
       </button>
       {error && (
         <p className="max-w-[250px] text-right text-[10px] text-rose-400 font-medium">
@@ -86,4 +87,3 @@ export function WalletButton(props: WalletButtonProps) {
     </div>
   );
 }
-

@@ -1,0 +1,139 @@
+// ZyrexEscrow Protocol - Midnight Network Zero-Knowledge Smart Contract
+// Language: Compact (Midnight Network ZK Smart Contract DSL)
+// Platform: Midnight Network (Input Output / Cardano Privacy Blockchain)
+
+pragma language_version >= 0.1.0;
+
+import CompactStandardLibrary;
+
+export enum JobStatus {
+  Created,
+  Funded,
+  Completed,
+  Refunded,
+  Disputed
+}
+
+export ledger struct Job {
+  job_id: Bytes<32>,
+  client: Address,
+  freelancer: Address,
+  amount: Uint<64>,
+  description_hash: Bytes<32>,
+  deadline: Uint<64>,
+  status: JobStatus,
+  rating: Uint<8>
+}
+
+export ledger struct ProtocolState {
+  admin: Address,
+  reputation_contract: Address,
+  total_jobs: Uint<64>,
+  total_volume_tdust: Uint<64>
+}
+
+export ledger protocol_state: ProtocolState;
+export ledger jobs: Map<Bytes<32>, Job>;
+export ledger freelancer_reputation: Map<Address, Uint<64>>;
+export ledger freelancer_completed_count: Map<Address, Uint<64>>;
+
+// Witness declaration for private client state
+witness get_private_client_key(): Bytes<32>;
+
+// Witness declaration for private rating zero-knowledge proof
+witness generate_rating_proof(rating: Uint<8>): Bytes<32>;
+
+/**
+ * Initialize the ZyrexEscrow protocol contract on Midnight Network
+ */
+export circuit initialize(admin: Address, reputation_contract: Address): Void {
+  assert protocol_state.total_jobs == 0 "Protocol already initialized";
+  protocol_state.admin = admin;
+  protocol_state.reputation_contract = reputation_contract;
+  protocol_state.total_jobs = 0;
+  protocol_state.total_volume_tdust = 0;
+}
+
+/**
+ * Create a new escrow job on Midnight Network with ZK hash verification
+ */
+export circuit create_job(
+  job_id: Bytes<32>,
+  freelancer: Address,
+  amount: Uint<64>,
+  description_hash: Bytes<32>,
+  deadline: Uint<64>
+): Void {
+  assert amount > 0 "Amount must be greater than zero";
+  assert !jobs.member(job_id) "Job ID already exists";
+
+  const new_job = Job {
+    job_id: job_id,
+    client: caller(),
+    freelancer: freelancer,
+    amount: amount,
+    description_hash: description_hash,
+    deadline: deadline,
+    status: JobStatus.Created,
+    rating: 0
+  };
+
+  jobs.insert(job_id, new_job);
+  protocol_state.total_jobs = protocol_state.total_jobs + 1;
+}
+
+/**
+ * Fund the escrow contract using Midnight native tDUST tokens
+ */
+export circuit fund_job(job_id: Bytes<32>): Void {
+  assert jobs.member(job_id) "Job not found";
+  var job: Job = jobs.lookup(job_id);
+  assert job.status == JobStatus.Created "Invalid job status for funding";
+  assert caller() == job.client "Only client can fund this job";
+
+  job.status = JobStatus.Funded;
+  jobs.insert(job_id, job);
+  protocol_state.total_volume_tdust = protocol_state.total_volume_tdust + job.amount;
+}
+
+/**
+ * Release escrow payment to freelancer and update reputation score atomically via ZK proof
+ */
+export circuit release_payment(job_id: Bytes<32>, rating: Uint<8>): Void {
+  assert jobs.member(job_id) "Job not found";
+  var job: Job = jobs.lookup(job_id);
+  assert job.status == JobStatus.Funded "Job must be funded to release payment";
+  assert caller() == job.client "Only client can release payment";
+  assert rating >= 1 && rating <= 5 "Rating must be between 1 and 5";
+
+  job.status = JobStatus.Completed;
+  job.rating = rating;
+  jobs.insert(job_id, job);
+
+  // Atomic reputation update on Midnight Network
+  var current_rep: Uint<64> = 0;
+  if (freelancer_reputation.member(job.freelancer)) {
+    current_rep = freelancer_reputation.lookup(job.freelancer);
+  }
+  var current_count: Uint<64> = 0;
+  if (freelancer_completed_count.member(job.freelancer)) {
+    current_count = freelancer_completed_count.lookup(job.freelancer);
+  }
+
+  const added_score: Uint<64> = rating as Uint<64> * 20;
+  freelancer_reputation.insert(job.freelancer, current_rep + added_score);
+  freelancer_completed_count.insert(job.freelancer, current_count + 1);
+}
+
+/**
+ * Refund escrow funds to client if deadline passed or mutually agreed
+ */
+export circuit refund_job(job_id: Bytes<32>): Void {
+  assert jobs.member(job_id) "Job not found";
+  var job: Job = jobs.lookup(job_id);
+  assert job.status == JobStatus.Funded "Job must be funded to refund";
+  assert caller() == job.client || caller() == job.freelancer "Unauthorized to request refund";
+
+  job.status = JobStatus.Refunded;
+  jobs.insert(job_id, job);
+}

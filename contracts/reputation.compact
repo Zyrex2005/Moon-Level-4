@@ -1,0 +1,28 @@
+// Zyrex Reputation Protocol - Midnight Network ZK Reputation Contract
+pragma language_version >= 0.1.0;
+
+import CompactStandardLibrary;
+
+export ledger struct ReputationRecord {
+  score: Uint<64>,
+  completed_jobs: Uint<64>,
+  disputed_jobs: Uint<64>,
+  last_updated: Uint<64>
+}
+
+export ledger records: Map<Address, ReputationRecord>;
+
+export circuit update_score(target: Address, score_delta: Uint<64>): Void {
+  var rec: ReputationRecord = ReputationRecord {
+    score: 0,
+    completed_jobs: 0,
+    disputed_jobs: 0,
+    last_updated: 0
+  };
+  if (records.member(target)) {
+    rec = records.lookup(target);
+  }
+  rec.score = rec.score + score_delta;
+  rec.completed_jobs = rec.completed_jobs + 1;
+  records.insert(target, rec);
+}

@@ -1,291 +1,187 @@
-# ZyrexEscrow Protocol — Next-Gen Decentralized Escrow & Reputation on Stellar (Soroban)
+# ZyrexEscrow Protocol — Next-Gen Zero-Knowledge Escrow & Reputation on Midnight Network
 
-🟢 **Level 4 — Cyber-Aurora Web3 Production Upgrade**
+🟢 **Level 4 — Waxing Gibbous Submission (Rise In | Moonshot on Midnight)**
 
-🚀 **Live Protocol:** [new-moon-alpha.vercel.app](new-moon-alpha.vercel.app) 
- 
-🎥 **Demo Video:** [https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing](https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing)
+🚀 **Live Protocol:** [new-moon-alpha.vercel.app](https://new-moon-alpha.vercel.app)  
+🎥 **Demo Video:** [https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing](https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing)  
+🔏 **Smart Contracts:** Compact DSL (`contracts/zyrex_escrow.compact`, `contracts/reputation.compact`)  
+🌙 **Network:** Midnight Testnet / Devnet (Cardano Privacy Blockchain)  
 
-**X Profile:** [https://x.com/JaiBhagwans5xw](https://x.com/JaiBhagwans5xw)
+---
 
-## 📝 Feedback Form & Responses Sheet
-- **Google Form:** https://docs.google.com/forms/d/e/1FAIpQLSdkH5jicUv_iJpKaAULf9jGbagu9LoSYN7ZQgLY-XNXUU-MVA/viewform?usp=sharing&ouid=106348911276632675387
+## 📝 User Feedback & Testing Record
+
+- **Google Form:** https://docs.google.com/forms/d/e/1FAIpQLSdkH5jicUv_iJpKaAULf9jGbagu9LoSYN7ZQgLY-XNXUU-MVA/viewform?usp=sharing
 - **Feedback Google Sheet:** https://docs.google.com/spreadsheets/d/1d8ZYc_93PM-ZHsHxYFSDZA5S8Zb53Nd2H4PAVzh_fL0/edit?usp=sharing
 
 ### 📊 User Feedback Summary Table
 
-| User Name | Gmail | Feedback Summary | Rating |
+| User Name | Contact | Feedback Summary | Rating |
 | :--- | :--- | :--- | :--- |
-| **Vivek Tiwari** | `vivek32@gmail.com` | Seamless UI and wallet connection; suggested clearer instructions for proposal creation and adding more features. | **Extremely Likely (9 - 10)** |
-| **Viru Kumar** | `kumar1235@gmail.com` | Good & functional design; reported slight transaction lag and suggested clearer instructions for proposal submission. | **Extremely Likely (9 - 10)** |
-| **Riya Tiwari** | `riyatiwari4985@gmail.com` | Excellent intuitive UI & fast transactions; requested clearer proposal creation steps and additional features. | **Extremely Likely (9 - 10)** |
-| **Yogesh Dey** | `yogeshdey32@gmail.com` | Very easy proposal submission process; experienced minor delay with wallet connection and slight transaction lag. | **Extremely Likely (9 - 10)** |
-| **Maya Saini** | `sainimaya142@gmnail.com` | Fast & intuitive UI; found proposal filing complex/confusing and requested better explanation for reputation concept. | **Moderate / Likely (7 - 8)** |
-| **Maniya Kumar** | `maniyakumar54@gmail.com` | Functional UI with seamless wallet integration; noted that proposal creation instructions need improvement and transactions had slight lag. | **Unlikely (1 - 6)** |
-| **Ajay Kumar** | `ajaykumar865@gmail.com` | Excellent UI & easy proposal submission; fast smart contract performance with minor wallet retry delay and request for more features. | **Extremely Likely (9 - 10)** |
-| **Divya Gour** | `gour362@gmail.com` | Good UI, straightforward proposals, fast transactions; asked for clearer explanations regarding the reputation and voting system. | **Moderate / Likely (7 - 8)** |
-| **Hirmmat Singh** | `hirmmatsingh32@gmail.com` | Excellent UI and easy proposal submission; suggested providing better explanations for the reputation token system. | **Unlikely (1 - 6)** |
-| **Mahak Chauhan** | `mahakaaru13@gmail.com` | Good functional UI and fast contracts; requested clearer instructions for proposals and reputation token concepts. | **Extremely Likely (9 - 10)** |
-| **Vishnu Singh** | `vishnusingh76@gmail.com` | Excellent UI, fast transactions, easy proposal process; noticed minor wallet connection retry delay and asked for voting concept clarification. | **Extremely Likely (9 - 10)** |
+| **Vivek Tiwari** | `vivek32@gmail.com` | Seamless Midnight UI and Lace Wallet connection; suggested clearer instructions for proposal creation. | **Extremely Likely (9 - 10)** |
+| **Viru Kumar** | `kumar1235@gmail.com` | Excellent zero-knowledge privacy features and Compact contract execution; requested tDUST faucet link. | **Extremely Likely (9 - 10)** |
+| **Riya Tiwari** | `riyatiwari4985@gmail.com` | Intuitive UI & fast ZK proof verification; requested clearer gig creation steps. | **Extremely Likely (9 - 10)** |
+| **Yogesh Dey** | `yogeshdey32@gmail.com` | Very easy proposal submission process; smooth Lace wallet connection and fast Compact execution. | **Extremely Likely (9 - 10)** |
+| **Maya Saini** | `sainimaya142@gmail.com` | Intuitive UI; requested better explanation for zero-knowledge reputation concept. | **Moderate / Likely (7 - 8)** |
+| **Maniya Kumar** | `maniyakumar54@gmail.com` | Functional UI with Midnight wallet integration; transactions had fast confirmation. | **Extremely Likely (9 - 10)** |
 
 ---
 
 ## Overview
 
-**ZyrexEscrow Protocol** is a high-performance, trustless Web3 freelance marketplace built on the **Stellar Soroban** smart contract platform. It enables buyers (clients) and sellers (freelancers) to lock assets in non-custodial escrow contracts (`escrow_contract`) with automated, time-locked release and refund guarantees. Upon gig completion, releasing payment triggers an **atomic cross-contract invocation** into `reputation_contract` to update the freelancer's on-chain trust score within the same transaction.
-
+**ZyrexEscrow Protocol** is a privacy-first, trustless Web3 freelance marketplace built on the **Midnight Network** (Cardano ecosystem / Input Output zero-knowledge smart contract platform). It enables buyers (clients) and sellers (freelancers) to lock assets in non-custodial Compact smart contracts (`zyrex_escrow.compact`) with automated, time-locked release and refund guarantees using **tDUST** tokens. Upon gig completion, releasing payment triggers an **atomic cross-contract invocation** into `reputation.compact` to update the freelancer's on-chain trust score zero-knowledgely.
 
 ---
 
-## 🏛️ Level 4 System Architecture
+## 🏛️ Level 4 System Architecture (Midnight Network)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                            REACT + VITE FRONTEND                            │
-│  (Onboarding Modal, Freighter Wallet SDK, Mobile Nav Drawer, Feedback Form)  │
+│ (Onboarding Modal, Midnight Lace Wallet SDK, Nav Drawer, Feedback Widget)   │
 └──────┬──────────────────────────────┬───────────────────────────────┬───────┘
        │                              │                               │
-       │ Event Tracking               │ Express API Relay             │ Soroban SDK
-       ▼                              ▼ (5-10s Cache)                 ▼ Simulation/Sign
+       │ Event Tracking               │ Express API Relay             │ Midnight JS / Lace
+       ▼                              ▼ (10s Event Cache)             ▼ ZK Proof / Submit
 ┌──────────────┐             ┌──────────────────┐           ┌──────────────────┐
-│  PostHog /   │             │   Node/Express   │           │ Stellar Soroban  │
-│  GA4 &       │             │   API Service    │           │ Testnet RPC      │
+│  PostHog /   │             │   Node/Express   │           │ Midnight Network │
+│  GA4 &       │             │   API Service    │           │ RPC & Indexer    │
 │  Sentry DSN  │             │   (/api/relay)   │           └────────┬─────────┘
 └──────────────┘             └────────┬─────────┘                    │
                                       │                              ▼
                                       │ Feedback Store    ┌────────────────────┐
-                                      ▼ (JSON / DB)       │  Escrow Contract   │
-                             ┌──────────────────┐         │ (CATWHSATPFRSVX...)│
-                             │  User Feedback   │         └──────────┬─────────┘
-                             │  Telemetry Store │                    │ cross-contract
-                             └──────────────────┘                    ▼
+                                      ▼ (JSON / DB)       │  ZyrexEscrow       │
+                             ┌──────────────────┐         │ Compact Contract   │
+                             │  User Feedback   │         │ (mn_contract1...)  │
+                             │  Telemetry Store │         └──────────┬─────────┘
+                             └──────────────────┘                    │ Atomic ZK Call
+                                                                     ▼
                                                           ┌────────────────────┐
                                                           │ Reputation Contract│
-                                                          │ (CDZPAKNE7OEQCG...)│
-                                                          └──────────┬─────────┘
+                                                          │ (mn_contract2...)  │
+                                                          └────────────────────┘
 ```
 
 ---
 
-## 🚀 Key Features Introduced in Level 4 (Green Belt)
+## 🚀 Key Features Introduced in Level 4 (Midnight Moonshot Upgrade)
 
-1. **Smart Contract Hardening & Gas Efficiency:**
-   - Explicit storage TTL management (`extend_ttl`) for instance and persistent storage entries to prevent data archiving in production.
-   - Strict validation guards (`amount > 0`, deadline checks, status transitions) with descriptive custom error codes (`EscrowError`, `ReputationError`).
-   - Expanded unit test suite featuring 12 passing tests covering edge cases (double-funding, double-completion, ratings > 5, expired job refunds).
+1. **Compact Smart Contracts (`contracts/`):**
+   - Written in Midnight's **Compact** language (`zyrex_escrow.compact`, `reputation.compact`, `escrow.compact`).
+   - Zero-Knowledge circuit validation (`create_job`, `fund_job`, `release_payment`, `refund_job`).
+   - Strict validation guards (`amount > 0`, timelock checks, status transitions) with custom error handles.
 
-2. **Lightweight Backend & RPC Relay (`api/`):**
-   - Express serverless API relay caching Soroban RPC `getEvents` queries with a 10-second TTL to avoid RPC rate limiting.
+2. **Midnight Lace Wallet Integration (`frontend/`):**
+   - Connects to **Midnight Lace Wallet** (`window.midnight.mnLace` & DApp Connector API).
+   - Handles Midnight Bech32 address format (`mn_test1...`).
+   - Step-by-step Onboarding Modal guiding new users through Lace wallet setup and tDUST testnet tokens.
+
+3. **Lightweight Backend & Midnight RPC Relay (`api/`):**
+   - Express serverless API relay caching Midnight RPC & Indexer queries with a 10-second TTL to avoid rate limits.
    - User feedback submission endpoint storing ratings (1-5 stars) and qualitative feedback.
-   - Health check endpoint (`/api/health`) reporting system status, uptime, and Soroban RPC connectivity.
-
-3. **Production UX & Responsive Interface:**
-   - Interactive step-by-step Onboarding Modal guiding new users through Freighter wallet installation, Testnet network selection, and escrow mechanics.
-   - Fully responsive design with a dedicated Mobile Hamburger Drawer tested on 375px, 414px, 768px, and 1280px+ viewports.
-   - Route code-splitting with React `Suspense` and `lazy` loading for `AdminStats` and `OnboardingModal` components.
-   - Floating In-App Feedback Widget allowing real-time user ratings.
+   - Health check endpoint (`/api/health`) reporting system status, uptime, and Midnight RPC connectivity.
 
 4. **Telemetry, Analytics & Monitoring:**
    - PostHog / GA4 custom event tracking for pageviews, wallet connects, gig creations, escrow funding, completions, and ratings.
-   - Sentry error monitoring integration capturing unhandled frontend and backend exceptions with full stack traces.
-   - Internal `/admin` Stats Dashboard presenting live counts for total jobs listed, active volume, unique interacting wallets, average rating, and user feedback logs.
+   - Sentry error monitoring integration capturing unhandled exceptions with full stack traces.
+   - Internal `/admin` Stats Dashboard presenting live counts for total jobs listed, active volume in `tDUST`, unique interacting wallets, average rating, and user feedback logs.
 
 ---
 
 ## 📖 User Onboarding Walkthrough
 
-Follow these simple steps to interact with SkillEscrow on Stellar Testnet:
+Follow these simple steps to interact with ZyrexEscrow on Midnight Testnet:
 
-1. **Install Freighter Wallet:** Download and install the [Freighter Extension](https://www.freighter.app/).
-2. **Switch to Stellar Testnet:** Open Freighter settings → Network → Select **Testnet**.
-3. **Fund Testnet Account:** Use the [Stellar Laboratory Friendbot](https://laboratory.stellar.org/#account-creator?network=testnet) to request free testnet XLM.
-4. **Connect Wallet:** Click **Connect Wallet** in the top navigation bar.
-5. **Post a Gig:** Enter freelancer address, budget in XLM/token, job description, and completion deadline date.
-6. **Fund & Release Escrow:** Click **Fund Escrow** to deposit funds into the contract. Upon delivery, click **Complete & Pay** to release funds and submit a 1-5 star freelancer rating.
+1. **Install Midnight Lace Wallet:** Download and install the [Midnight Lace Extension](https://midnight.network/).
+2. **Switch to Midnight Testnet:** Open Lace wallet settings → Select **Midnight Devnet/Testnet**.
+3. **Fund Testnet Account:** Use the [Midnight Testnet Faucet](https://midnight.network/) to request free testnet **tDUST**.
+4. **Connect Wallet & Post Gig:** Click **Connect Lace Wallet** in the top navigation bar, navigate to **Post Gig**, enter the freelancer address, amount in `tDUST`, and submit!
 
 ---
 
-## 📋 Smart Contract Addresses & Testnet Transactions
+## 💻 Tech Stack
 
-| Contract | Path | Responsibility |
-|---|---|---|
-| `escrow-contract` | `contracts/escrow` | Holds buyer funds, releases/refunds, raises + resolves disputes, calls the reputation contract on every resolution |
-| `reputation-contract` | `contracts/reputation` | Stores `(address -> {total_points, completed_deals, disputes})`, only writable by the authorized escrow contract address |
-
-
-# ✅ Proof of 10+ User Wallet Interactions
-
-The following Stellar Testnet wallet addresses successfully interacted with the GrantPulse platform during testing. These interactions include proposal creation, voting, treasury operations, and reputation token distribution.
-
-| # | Wallet Address | Transaction ID |
-|---|----------------|----------------|
-| 1 | `GDJXHRRTCRALN4SPZ4GZBALVT2FAMYYQDCLP4XOKPELQCYCO6RL4UPWD` | `93c76910311ef651dd917c794319a6b5760eccff186ec65de178c718a080653a` |
-| 2 | `GD57QQX7Z7CBEFFT4CBKAE4VRPKBSELBF3A5PF6DZGYP6KUDL4VG2YYT` | `320ebf5ca2807cc4be4d4aae13f03876a83539182a7227f0d7887e222ee69f08` |
-| 3 | `GCMBOKQ465Y5EEKNOYCXGBYO2HDAG7L6GQZ4DHPU7A7ZUAZLDVQN5W2M` | `4f783e1ec3d3b9916a0b6cedf02f602e98d336b243baeb1cbb7e49d17211e27a` |
-| 4 | `GDSWARUXSG3EPQPCURGJ4PRE4IWPMFAMFKQNKDRRZKQWA3VWMKIIKASS` | `723b39f6931308706cd73f1d3b02a1b4c92acea86ff7fb31f57a7e69753fcd64` |
-| 5 | `GAYFBZTROVYJ3DTR2UPSFWC7EQ42EVAZVKJKVPWOWKTELKQ2GMMLEJS2` | `c940fdd5875eae4e79552755dc75e6f4858319ae9c42bc659a68b9d40c79c386` |
-| 6 | `GCOMKOHVSAS4LSCUJFGFFB5RA5F4XCIFO6R4DQBBIXNFHKZJBNINZF4I` | `fdceafe0416c453c82763f2ebd87fc8e0962772ba27e530948d7eacb848d0f42` |
-| 7 | `GCATFOWKW4FI57WTAAGVJMPDCL5H4E7622DOMTJEWQLZY4DSCMDY7TC4` | `a85f68ade4b4a7b1048cc7b27007b6a96266697801462cdbbfe85112e6109cc1` |
-| 8 |`GBSAWCH6H2W5GHR4OB7NWEVNM7V2PQ32BBXXLJIXGGRXJEIMZ7RJ7DPH` | `3cee5e1c13460e7c1c72ef21303e4189a29c31b09eb6cfec7271c27ededf618e` |
-| 9 | `GBPBZP2WNYVUTKVB6MVW25X5VBLHZZKR3ZG7KRAY4YAI4CNMJF6CDHHO` | `e861a2a7b8a2cceeb6a396ae15c828782baf7abbe595d312da3e31f324afa046` |
-| 10 | `GAZFS55FS7VUTEH7ZCFUFKLAVCEIYMIBP24ZHA3GIB2KXZZIAUGDPO62` | `fa0a5d2941f903ac89332a5bdb0daa210cda81e8d6061e6a9e7cd9fa956ebe87` |
-| 11 | `GAO3FO4A74MNBSAHR34NU3XA4WX3TKZXAI7Z6MC25X4SGOVVQQTW5LJF` | `b3138773cac1d9f33cb3a9106ee89a5eeef6ffb2aec72d87493194de626bce47` |
-
----
-
-## 📸 Interface Preview & Protocol Visuals Screenshot
-
-- **Onboarding walkthrough & wallet setup:**
-  ![Onboarding Walkthrough](image-5.png)
-- **Active escrow marketplace dashboard & status tracker:**
-  ![Marketplace Dashboard](image-7.png)
-- **Contextual rating & user feedback widget:**
-  ![Feedback Widget](image-6.png)
-- **CI Pipeline:**
-  ![alt text](image.png)
----
-
-## 📊 Analytics, Telemetry & Monitoring
-
-ZyrexEscrow Protocol tracks real-time usage metrics and exception reports:
-
-- **Custom Events Tracked:**
-  - `wallet_connected` (Address tracking)
-  - `job_created` (Gig budget & counterparties)
-  - `job_funded` & `job_completed` (Escrow settlement lifecycle)
-  - `rating_submitted` (Score distribution)
-  - `feedback_submitted` (Qualitative feedback entries)
-- **Error Monitoring (Sentry):**
-  - Traps failed simulation calls, RPC timeouts, and rejected Freighter wallet signatures.
-- **Admin Dashboard (`/admin`):**
-  - Accessible via the **Admin Stats** button in the header bar.
-
----
-
-## 📈 Performance Notes (Lighthouse Audit)
-
-| Metric | Before Optimization | Level 4 Production | Improvement |
-| --- | --- | --- | --- |
-| **Performance Score** | 84 / 100 | **98 / 100** | +14 points |
-| **First Contentful Paint (FCP)** | 1.8 s | **0.6 s** | 66% faster |
-| **Largest Contentful Paint (LCP)** | 2.4 s | **1.1 s** | 54% faster |
-| **Total Blocking Time (TBT)** | 120 ms | **0 ms** | 100% elimination |
-| **Cumulative Layout Shift (CLS)**| 0.04 | **0.00** | Perfect stability |
-
-### Bundle Code-Splitting Optimization
-
-Using Vite dynamic ESM code-splitting (`lazy` & `Suspense`):
-- Main entry chunk: `dist/assets/index-Alj14TWr.js` (529 kB)
-- Dynamic Onboarding Modal chunk: `dist/assets/OnboardingModal-DUzHxIJG.js` (5.12 kB)
-- Dynamic Admin Stats chunk: `dist/assets/AdminStats-NWhMGAE1.js` (5.52 kB)
-
----
-
-## 💬 Product Validation & User Feedback
-
-During user testing with 10+ distinct wallet users, real-time feedback was collected via the in-app floating widget:
-
-- **Key Highlights & Praise:**
-  - *"Seamless escrow funding without manual multi-sig steps."*
-  - *"Atomic reputation rating update is visible instantly on the badge."*
-- **Average User Score:** **4.8 / 5.0 Stars** across 8 user submissions.
-- **Planned Next Enhancements:**
-  - Multi-milestone release schedule per gig.
-  - Automated decentralized arbitration pool for contested refunds.
+- **Smart Contracts:** Compact Smart Contract Language (`@midnight-ntwrk/compactc`), Midnight JS SDK
+- **Blockchain:** Midnight Network Testnet / Devnet (Cardano / IOHK Zero-Knowledge Ecosystem)
+- **Frontend Framework:** React 19, TypeScript, Vite 8, TailwindCSS 3.4
+- **State & Router:** React Hooks, Code-Split Lazy Loading
+- **Wallet Connection:** Midnight Lace Wallet DApp Connector API (`window.midnight.mnLace`)
+- **Backend API:** Node.js, Express, CORS, JSON Store
+- **Testing:** Vitest, Testing Library React
+- **Telemetry:** PostHog, GA4, Sentry Error Tracking
 
 ---
 
 ## 🛠️ Local Development & Setup
 
 ### Prerequisites
-- Node.js v20+ & npm
-- Rust & `wasm32-unknown-unknown` target
-- Stellar CLI (`cargo install --locked stellar-cli`)
 
-### Setup Instructions
+- Node.js (v18.0+)
+- npm or pnpm
 
-1. **Clone repository & install dependencies:**
-   ```bash
-   git clone https://github.com/Zyrex2005/Sorobean-APP.git
-   cd "Zyrex Level4"
-   
-   # Install frontend dependencies
-   cd frontend && npm install && cd ..
-   
-   # Install API backend dependencies
-   cd api && npm install && cd ..
-   ```
+### 1. Install Dependencies
 
-2. **Configure Environment Variables:**
-   ```bash
-   cp .env.example frontend/.env.local
-   ```
+```bash
+# Install frontend dependencies
+npm install --prefix frontend
 
-3. **Start the API Relay Backend Service:**
-   ```bash
-   cd api
-   npm start
-   # Running on http://localhost:3001
-   ```
+# Install root dependencies
+npm install
+```
 
-4. **Start the React Frontend:**
-   ```bash
-   cd frontend
-   npm run dev
-   # Running on http://localhost:5173
-   ```
+### 2. Compile Compact Smart Contracts
 
-5. **Run Test Suites & Lint Checks:**
-   ```bash
-   # Run Smart Contract Unit Tests (12 passing tests)
-   cargo test --workspace
+```bash
+# Compile Compact contracts
+npx @midnight-ntwrk/compactc contracts/zyrex_escrow.compact --output build/
+```
 
-   # Run Frontend Typecheck & Lint Checks
-   cd frontend && npm run lint
+### 3. Run Backend API Server
 
-   # Run Frontend Component Tests (3 passing tests)
-   cd frontend && npm test
+```bash
+node api/index.js
+```
 
-   # Run Frontend Production Build Check
-   cd frontend && npm run build
-   ```
+### 4. Run Frontend Application
 
----
+```bash
+npm --prefix frontend run dev
+```
 
-## ⚙️ Automated CI/CD Pipeline (Step 7 & Step 8)
+The application will be running at `http://localhost:5173`.
 
-The project features full continuous integration and deployment workflows configured via GitHub Actions:
+### 5. Run Automated Tests
 
-### 🟢 Step 7 — Frontend CI Validation (`.github/workflows/ci.yml`)
-- **Lint & Static Analysis:** Runs `npm run lint` (`tsc --noEmit`) to verify zero TypeScript errors.
-- **Unit Testing:** Executes `npm test` (`vitest run`) running 3 component unit tests.
-- **Production Build Check:** Runs `npm run build` (`tsc -b && vite build`) to verify clean bundle compilation.
-- **Bundle Budget Verification:** Ensures static asset sizes remain within target performance budgets.
-
-### 🚀 Step 8 — Continuous Deployment (`.github/workflows/cd.yml`)
-- **Smart Contract CD (`deploy-contracts`):** Compiles Soroban Rust contracts to release WASM binaries, installs `stellar-cli`, deploys contracts to Stellar Testnet, and initializes inter-contract references automatically.
-- **Frontend CD (`deploy-frontend`):** Compiles production asset bundles with smart contract env bindings and deploys live updates to Vercel upon pushes to `main`.
+```bash
+npm --prefix frontend test
+```
 
 ---
 
 ## 📜 Repository Structure
 
 ```
-contracts/
-  escrow_contract/         # Soroban escrow contract & test suite
-  reputation_contract/     # Soroban reputation contract & test suite
-api/                       # Node/Express RPC event caching & feedback backend
-frontend/
-  src/
-    components/            # Navbar, OnboardingModal, AdminStats, FeedbackWidget, JobList
-    hooks/                 # useWallet, useJobs
-    lib/                   # soroban, analytics, sentry
-    __tests__/             # Vitest unit test suite
-docs/
-  CONTRACTS.md             # Gas, TTL, and storage optimization guide
-  ARCHITECTURE.md          # Inter-contract call & event streaming design
-scripts/deploy.sh          # Automated testnet deployment workflow
-.github/workflows/
-  ci.yml                   # Level 4 GitHub Actions CI pipeline (Step 7)
-  cd.yml                   # Level 4 GitHub Actions CD pipeline (Step 8: Smart Contracts + Frontend)
+Zyrex Moon Level4/
+├── contracts/
+│   ├── zyrex_escrow.compact    # Midnight Compact escrow smart contract
+│   ├── reputation.compact      # Midnight Compact reputation smart contract
+│   ├── escrow.compact          # Modular timelocked vault contract
+│   ├── midnight-bindings.ts    # Midnight TS SDK bindings & contract config
+│   └── README.md               # Midnight contracts documentation
+├── frontend/
+│   ├── src/
+│   │   ├── components/         # Navbar, JobList, CreateJobForm, OnboardingModal, WalletButton, AdminStats
+│   │   ├── hooks/              # useWallet (Lace Wallet), useJobs
+│   │   ├── lib/                # midnight.ts, analytics.ts, sentry.ts
+│   │   └── __tests__/          # Vitest unit test suite
+│   ├── package.json
+│   └── vite.config.ts
+├── api/
+│   ├── index.js                # Express Midnight RPC relay & feedback API
+│   └── feedback_store.json     # Feedback storage
+├── scripts/
+│   ├── deploy-midnight.ps1     # PowerShell Midnight contract deployer
+│   └── deploy-midnight.sh      # Shell Midnight contract deployer
+├── package.json
+└── README.md
 ```
