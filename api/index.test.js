@@ -24,7 +24,7 @@ test("GET /api/health returns healthy status schema", async () => {
   assert.strictEqual(res.status, 200);
   const body = await res.json();
   assert.strictEqual(body.status, "ok");
-  assert.strictEqual(body.service, "AstraTrust API Relay");
+  assert.strictEqual(body.service, "ZyrexEscrow Midnight Indexer & RPC Relay");
   assert.ok(typeof body.uptimeSeconds === "number");
 });
 
@@ -61,7 +61,7 @@ test("GET /api/stats returns service stats overview", async () => {
   const res = await fetch(`${baseUrl}/api/stats`);
   assert.strictEqual(res.status, 200);
   const body = await res.json();
-  assert.strictEqual(body.service, "AstraTrust Production API");
+  assert.strictEqual(body.service, "ZyrexEscrow Midnight Production API");
   assert.ok(typeof body.totalFeedbackSubmissions === "number");
 });
 
