@@ -21,6 +21,17 @@
 
 ---
 
+## 📸 Application Screenshots & Visual Proof
+
+| Feature / Screen | Screenshot Preview | Description |
+| :--- | :--- | :--- |
+| **DApp Protocol Interface** | ![DApp Interface](docs/screenshots/dapp_interface.png) | Main ZyrexEscrow user interface showing gig listings, wallet connection, and reputation badges. |
+| **Level 4 Submission Proof** | ![Submission Proof](docs/screenshots/submission_proof.png) | Level 4 Waxing Gibbous submission record and Rise In platform interface. |
+| **Reviewer Feedback & Status** | ![Review Status](docs/screenshots/review_needed.png) | Reviewer feedback history and revision tracking. |
+| **User Feedback Record** | ![User Feedback](docs/screenshots/user_feedback_proof.png) | Verified user testing records and feedback submission details. |
+
+---
+
 
 ## 📝 User Feedback & Testing Record
 
