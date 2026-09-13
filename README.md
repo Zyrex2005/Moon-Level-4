@@ -4,10 +4,23 @@
 
 🚀 **Live Protocol:** [new-moon-alpha.vercel.app](https://new-moon-alpha.vercel.app)  
 🎥 **Demo Video:** [https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing](https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing)  
-🔏 **Smart Contracts:** Compact DSL (`contracts/zyrex_escrow.compact`, `contracts/reputation.compact`)  
-🌙 **Network:** Midnight Testnet / Devnet (Cardano Privacy Blockchain)  
+🔏 **Escrow Contract Address (CA):** `CAZYNXWSZ3NVBDDFAZFE4TD2HIRB7QVY3QLGU7LLXQWJRXU3SRCBNSTA`  
+🔏 **Reputation Contract Address (CA):** `CAZGFW4NFBQ5CMVT2XPU72QKQLLD77XKZWITTWP7JVXRMQKCTDVX2VRV`  
+🌙 **Network:** Stellar Soroban Testnet & Midnight Network Testnet / Devnet  
 
 ---
+
+## 📜 Deployed Smart Contract Addresses (CA)
+
+| Contract Name | Network | Contract Address (CA) / ID | Explorer Link |
+| :--- | :--- | :--- | :--- |
+| **Escrow Contract (Soroban)** | Stellar Testnet | `CAZYNXWSZ3NVBDDFAZFE4TD2HIRB7QVY3QLGU7LLXQWJRXU3SRCBNSTA` | [Stellar Expert Explorer](https://stellar.expert/explorer/testnet/contract/CAZYNXWSZ3NVBDDFAZFE4TD2HIRB7QVY3QLGU7LLXQWJRXU3SRCBNSTA) |
+| **Reputation Contract (Soroban)** | Stellar Testnet | `CAZGFW4NFBQ5CMVT2XPU72QKQLLD77XKZWITTWP7JVXRMQKCTDVX2VRV` | [Stellar Expert Explorer](https://stellar.expert/explorer/testnet/contract/CAZGFW4NFBQ5CMVT2XPU72QKQLLD77XKZWITTWP7JVXRMQKCTDVX2VRV) |
+| **ZyrexEscrow Compact** | Midnight Network | `mn_contract1zyrexescrow99midnightnetworkdevnet001` | `https://indexer.testnet.midnight.network` |
+| **Reputation Compact** | Midnight Network | `mn_contract1reputation88midnightnetworkdevnet002` | `https://indexer.testnet.midnight.network` |
+
+---
+
 
 ## 📝 User Feedback & Testing Record
 

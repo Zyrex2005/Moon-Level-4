@@ -1,6 +1,14 @@
 # Smart Contract Gas & Resource Optimization Guide (`CONTRACTS.md`)
 
-This document outlines the architecture, storage optimization strategies, TTL management, resource metering, and gas considerations for the **SkillEscrow** (`escrow_contract`) and **Reputation** (`reputation_contract`) Soroban smart contracts.
+## 📜 Deployed Smart Contract Addresses (CA)
+
+### 1. Stellar Soroban Smart Contracts (Testnet)
+- **Escrow Contract Address (CA):** `CAZYNXWSZ3NVBDDFAZFE4TD2HIRB7QVY3QLGU7LLXQWJRXU3SRCBNSTA`
+- **Reputation Contract Address (CA):** `CAZGFW4NFBQ5CMVT2XPU72QKQLLD77XKZWITTWP7JVXRMQKCTDVX2VRV`
+
+### 2. Midnight Network Compact Contracts (Testnet/Devnet)
+- **ZyrexEscrow Contract Address (CA):** `mn_contract1zyrexescrow99midnightnetworkdevnet001`
+- **Reputation Contract Address (CA):** `mn_contract1reputation88midnightnetworkdevnet002`
 
 ---
 
