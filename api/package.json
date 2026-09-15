@@ -2,7 +2,7 @@
   "name": "zyrex-escrow-api",
   "version": "1.0.0",
 
-  "description": "Lightweight API relay for Soroban RPC events and feedback collection",
+  "description": "Lightweight API relay for Midnight RPC events and feedback collection",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

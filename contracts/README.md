@@ -4,11 +4,6 @@ This directory contains the zero-knowledge smart contract implementation for **Z
 
 ## 📜 Deployed Smart Contract Addresses (CA)
 
-### 1. Stellar Soroban Smart Contracts (Testnet)
-- **Escrow Contract Address (CA):** `CAZYNXWSZ3NVBDDFAZFE4TD2HIRB7QVY3QLGU7LLXQWJRXU3SRCBNSTA`
-- **Reputation Contract Address (CA):** `CAZGFW4NFBQ5CMVT2XPU72QKQLLD77XKZWITTWP7JVXRMQKCTDVX2VRV`
-
-### 2. Midnight Network Compact Contracts (Testnet/Devnet)
 - **ZyrexEscrow Contract Address (CA):** `mn_contract1zyrexescrow99midnightnetworkdevnet001`
 - **Reputation Contract Address (CA):** `mn_contract1reputation88midnightnetworkdevnet002`
 
@@ -16,12 +11,10 @@ This directory contains the zero-knowledge smart contract implementation for **Z
 
 ## Architecture & Smart Contracts
 
-1. **`escrow_contract/`**: Soroban Rust escrow contract implementation (`contracts/escrow_contract/src/lib.rs`).
-2. **`reputation_contract/`**: Soroban Rust reputation scoring contract implementation (`contracts/reputation_contract/src/lib.rs`).
-3. **`zyrex_escrow.compact`**: Core protocol contract supporting zero-knowledge job creation, private funding in `tDUST`, atomic payment releases with cross-contract reputation updates, and dispute safeguards.
-4. **`reputation.compact`**: Zero-knowledge proof reputation recording contract tracking trust scores, completed gigs, and rating metrics.
-5. **`escrow.compact`**: Modular timelocked vault release contract on Midnight.
-6. **`midnight-bindings.ts`**: TypeScript SDK interfaces, contract addresses, and RPC/Indexer configuration for frontend integration.
+1. **`zyrex_escrow.compact`**: Core protocol contract supporting zero-knowledge job creation, private funding in `tDUST`, atomic payment releases with cross-contract reputation updates, and dispute safeguards.
+2. **`reputation.compact`**: Zero-knowledge proof reputation recording contract tracking trust scores, completed gigs, and rating metrics.
+3. **`escrow.compact`**: Modular timelocked vault release contract on Midnight.
+4. **`midnight-bindings.ts`**: TypeScript SDK interfaces, contract addresses, and RPC/Indexer configuration for frontend integration.
 
 ## Key Features & ZK Privacy Layout
 

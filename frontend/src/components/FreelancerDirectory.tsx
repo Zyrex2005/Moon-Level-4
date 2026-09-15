@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import type { JobItem } from "./JobList";
-import { getReputationDetails } from "../lib/soroban";
+import { getReputationDetails } from "../lib/midnight";
 
 interface FreelancerDirectoryProps {
   jobs: JobItem[];
@@ -99,10 +99,10 @@ export const FreelancerDirectory: React.FC<FreelancerDirectoryProps> = ({
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-4">
         <div>
           <h2 className="text-2xl font-black tracking-tight text-gradient-cyan">
-            ⭐ AstraTrust Freelancer Directory
+            ⭐ ZyrexEscrow Freelancer Directory
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            Discover verified Web3 talent on Stellar Soroban with immutable cross-contract reputation scores.
+            Discover verified Web3 talent on Midnight Network with immutable Compact cross-contract reputation scores.
           </p>
         </div>
 
@@ -180,7 +180,7 @@ export const FreelancerDirectory: React.FC<FreelancerDirectoryProps> = ({
                       {p.address}
                     </h3>
                     <p className="text-[10px] text-slate-400 font-mono mt-0.5">
-                      Stellar Testnet Public Key
+                      Midnight Network Address
                     </p>
                   </div>
                 </div>

@@ -1,90 +1,46 @@
-# Smart Contract Gas & Resource Optimization Guide (`CONTRACTS.md`)
+# Compact Smart Contract Specification & Resource Optimization Guide (`CONTRACTS.md`)
 
 ## 📜 Deployed Smart Contract Addresses (CA)
 
-### 1. Stellar Soroban Smart Contracts (Testnet)
-- **Escrow Contract Address (CA):** `CAZYNXWSZ3NVBDDFAZFE4TD2HIRB7QVY3QLGU7LLXQWJRXU3SRCBNSTA`
-- **Reputation Contract Address (CA):** `CAZGFW4NFBQ5CMVT2XPU72QKQLLD77XKZWITTWP7JVXRMQKCTDVX2VRV`
-
-### 2. Midnight Network Compact Contracts (Testnet/Devnet)
+### Midnight Network Compact Contracts (Testnet/Devnet)
 - **ZyrexEscrow Contract Address (CA):** `mn_contract1zyrexescrow99midnightnetworkdevnet001`
 - **Reputation Contract Address (CA):** `mn_contract1reputation88midnightnetworkdevnet002`
 
 ---
 
-## 1. Storage Architecture & Efficiency
+## 1. Compact Smart Contract Architecture & Zero-Knowledge Circuits
 
-Soroban uses three distinct storage tiers: **Instance**, **Persistent**, and **Temporary**. Storage efficiency is critical because read/write CPU cycles and byte footprints directly determine transaction gas costs on the Stellar network.
+Midnight's **Compact** language compiles smart contracts into zero-knowledge circuits and state mutation logic. ZyrexEscrow Protocol leverages Compact circuits for private state verification, non-custodial escrow custody, and cross-contract reputation updates.
 
-| Storage Type | Usage in SkillEscrow | Rationale |
+| Circuit / Function | Contract | Rationale & ZK Witness Guard |
 | --- | --- | --- |
-| **Instance Storage** | Admin Address, Reputation Contract Address, Next Job ID counter | Frequently accessed global configuration with small byte size (~100 bytes total). Shared TTL across all instance reads. |
-| **Persistent Storage** | Job Entries (`DataKey::Job(u64)`), User Reputation (`DataKey::Reputation(Address)`) | Long-lived records that must persist indefinitely across jobs and freelancer rating histories. Auto-bumped via `extend_ttl`. |
-| **Temporary Storage** | Not used for core records | Saved for short-lived computational state to avoid paying permanent state creation fees. |
-
-### Data Footprint Minimization
-- **Job Struct Size:** The `Job` struct contains 8 compact fields (`client`, `freelancer`, `token`, `amount: i128`, `description: String`, `deadline: u64`, `status: Status`, `rated: bool`).
-- **Reputation Struct Size:** The `Reputation` struct stores `total_score: u32` and `rating_count: u32` (~8 bytes body), enabling fast O(1) reads and updates without unbounded array growth.
+| `create_job` | `zyrex_escrow.compact` | Registers gig metadata, client identity, and timelock parameters with circuit validation (`amount > 0`). |
+| `fund_job` | `zyrex_escrow.compact` | Locks `tDUST` tokens in the non-custodial Compact contract vault and verifies client signature. |
+| `release_payment` | `zyrex_escrow.compact` | Releases `tDUST` tokens to freelancer and triggers atomic cross-contract call to `reputation.compact`. |
+| `refund_job` | `zyrex_escrow.compact` | Refunds locked tokens to client if job deadline timestamp has expired without completion. |
+| `add_rating` | `reputation.compact` | Zero-knowledgely increments total score and rating count for freelancer upon gig completion. |
 
 ---
 
-## 2. TTL (Time-To-Live) & Rent Bump Strategy
+## 2. Zero-Knowledge Witness Layout & State Privacy
 
-On Stellar Soroban, persistent entries require rent upkeep to prevent archiving. Every state-mutating function in SkillEscrow executes explicit TTL extension calls:
+In Compact contracts, public ledger state is separated from private witness execution:
 
-```rust
-// Auto-bump instance storage TTL (minimum 1,000 ledgers, maximum target 5,000 ledgers)
-env.storage().instance().extend_ttl(1000, 5000);
-
-// Auto-bump persistent job storage TTL on write and read
-let key = DataKey::Job(job_id);
-env.storage().persistent().extend_ttl(&key, 1000, 5000);
-```
-
-- **Read-Path TTL Bumps:** `get_job` and `get_reputation` automatically call `extend_ttl` so active jobs remain un-archived during active client-freelancer interactions.
-- **Write-Path Safety:** `create_job`, `fund_job`, `complete_job`, `refund_job`, and `submit_rating` refresh rent bounds at every transition step.
+- **Private Client Witness:** `witness get_private_client_key()` shields raw wallet identity during local ZK proof generation.
+- **State Proof Generation:** Proofs are generated locally via Midnight Proof Server before broadcasting transactions to Midnight Testnet RPC nodes.
+- **State Footprint:** Minimal on-chain ledger footprint minimizes circuit constraint count and gas fees on Midnight Network.
 
 ---
 
-## 3. Hot-Path Function Analysis & Resource Footprint
+## 3. Circuit Guards & Custom Error Conditions
 
-### 1. `create_job`
-- **Reads:** 1 Instance Read (`NEXT_ID_KEY`)
-- **Writes:** 1 Persistent Write (`DataKey::Job(id)`), 1 Instance Write (`NEXT_ID_KEY`)
-- **Validation:** `amount > 0`, `client.require_auth()`
-- **Event:** Emits `symbol_short!("created")` with `(client, freelancer, amount)`
+Compact contract execution enforces strict validation guards:
 
-### 2. `fund_job`
-- **Reads:** 1 Persistent Read (`DataKey::Job(job_id)`)
-- **Writes:** 1 Persistent Write (`DataKey::Job(job_id)` with `Status::Funded`)
-- **Token Operations:** 1 Cross-contract `token.transfer(client -> contract)`
-- **Auth Guard:** `job.client.require_auth()`
-
-### 3. `complete_job`
-- **Reads:** 1 Persistent Read (`DataKey::Job(job_id)`)
-- **Writes:** 1 Persistent Write (`DataKey::Job(job_id)` with `Status::Completed`)
-- **Token Operations:** 1 Cross-contract `token.transfer(contract -> freelancer)`
-- **Auth Guard:** `job.client.require_auth()`
-
-### 4. `submit_rating` (Cross-Contract Hot Path)
-- **Reads:** 1 Persistent Read (`DataKey::Job(job_id)`), 1 Instance Read (`REP_KEY`)
-- **Writes:** 1 Persistent Write (`DataKey::Job(job_id)` with `rated = true`)
-- **Cross-Contract Call:** Invokes `ReputationContract::add_rating(freelancer, score)` which performs 1 Persistent Read/Write on `DataKey::Reputation(freelancer)`.
-
----
-
-## 4. Custom Error Codes & Security Guards
-
-All invalid operations reject early to save gas:
-
-| Error Name | Code | Trigger Condition |
-| --- | --- | --- |
-| `AlreadyInitialized` | 1 | Re-calling `initialize` on an already active contract |
-| `NotInitialized` | 2 | Invoking methods before contract initialization |
-| `NotFound` | 3 | Querying a non-existent `job_id` |
-| `InvalidStatus` | 4 | Funding an already funded job, or completing an un-funded job |
-| `Unauthorized` | 5 | Caller lacks signature for required address |
-| `DeadlineNotPassed` | 6 | Requesting refund before job deadline timestamp |
-| `AlreadyRated` | 7 | Submitting multiple ratings for the same completed job |
-| `InvalidAmount` | 8 | Creating a job with amount <= 0 |
-| `InvalidScore` | 9 | Submitting a rating score > 5 |
+| Error / Guard Condition | Trigger Criteria |
+| --- | --- |
+| `InvalidAmount` | Job creation attempted with `amount <= 0` |
+| `InvalidStatus` | Attempting to fund an already funded job, or release payment on an un-funded job |
+| `Unauthorized` | Caller address does not match client public key |
+| `DeadlineNotPassed` | Refund requested prior to job timelock expiration |
+| `AlreadyRated` | Submitting a rating score for an already rated job |
+| `InvalidScore` | Submitting rating score outside bounds `1..5` |

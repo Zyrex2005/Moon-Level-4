@@ -83,11 +83,11 @@ export async function getReputationDetails(address: string): Promise<{ total_sco
   return { total_score: 200, rating_count: 2 };
 }
 
-// Backward compatibility exports for existing codebase references
-export const SOROBAN_RPC_URL = MIDNIGHT_RPC_URL;
-export const rpcServer = {
+// Midnight Network Indexer & RPC Provider Server Interface
+export const midnightRpcServer = {
   getLatestLedger: async () => ({ sequence: 489210 }),
   getTransaction: async (hash: string) => ({ status: "SUCCESS", hash }),
   getEvents: async () => ({ events: [] }),
 };
 export const callContractMethod = callMidnightContractMethod;
+

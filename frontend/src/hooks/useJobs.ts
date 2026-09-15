@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import type { JobItem } from "../components/JobList";
-import { getJobDetails, ESCROW_CONTRACT_ID, rpcServer } from "../lib/soroban";
+import { getJobDetails, ESCROW_CONTRACT_ID, midnightRpcServer } from "../lib/midnight";
 
 const DEFAULT_DEMO_JOBS: JobItem[] = [
   {
@@ -82,7 +82,7 @@ export function useJobs() {
   useEffect(() => {
     refreshJobs();
     
-    rpcServer.getLatestLedger()
+    midnightRpcServer.getLatestLedger()
       .then((res) => {
         lastLedgerRef.current = res.sequence;
       })
@@ -97,7 +97,7 @@ export function useJobs() {
     const interval = setInterval(async () => {
       try {
         if (lastLedgerRef.current === 0) return;
-        const response = await rpcServer.getEvents();
+        const response = await midnightRpcServer.getEvents();
         if (response.events && response.events.length > 0) {
           await refreshJobs();
         }

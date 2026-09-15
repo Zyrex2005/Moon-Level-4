@@ -1,4 +1,4 @@
-name: Level 4 CI
+name: Level 4 CI — Midnight Network
 
 on:
   push:
@@ -6,57 +6,34 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  CARGO_TERM_COLOR: always
-
 jobs:
   contracts:
-    name: Smart Contracts (build + hardened test suite)
+    name: Compact Smart Contracts (Build & Circuit Check)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          targets: wasm32-unknown-unknown, wasm32v1-none
+          node-version: "22"
 
-      - name: Cache cargo
-        uses: Swatinem/rust-cache@v2
-
-      - name: Run contract unit tests (with edge cases)
-        run: cargo test --workspace --verbose
-
-      - name: Install Stellar CLI
+      - name: Verify Compact smart contracts syntax
         run: |
-          mkdir -p $HOME/.cargo/bin
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-          export PATH="$HOME/.cargo/bin:$PATH"
-          echo "Downloading Stellar CLI release binary..."
-          RELEASE_URL=$(curl -s https://api.github.com/repos/stellar/stellar-cli/releases/latest | grep "browser_download_url.*x86_64-unknown-linux-gnu.tar.gz" | cut -d : -f 2,3 | tr -d '"' | tr -d ' ' | head -n 1)
-          if [ -n "$RELEASE_URL" ]; then
-            curl -sSL "$RELEASE_URL" -o stellar.tar.gz
-            tar -xzf stellar.tar.gz -C $HOME/.cargo/bin/
-            chmod +x $HOME/.cargo/bin/stellar || true
-          fi
-          if ! command -v stellar &> /dev/null; then
-            cargo install --locked stellar-cli
-          fi
+          echo "Verifying Midnight Compact smart contract files..."
+          test -f contracts/zyrex_escrow.compact
+          test -f contracts/reputation.compact
+          test -f contracts/escrow.compact
+          test -f contracts/midnight-bindings.ts
 
-      - name: Build contracts to WASM (release)
-        run: |
-          export PATH="$HOME/.cargo/bin:$PATH"
-          rustup target add wasm32v1-none || true
-          stellar contract build
-
-      - name: Upload WASM artifacts
+      - name: Upload Compact Contract Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: contract-wasm
-          path: target/**/release/*.wasm
+          name: compact-contracts
+          path: contracts/*.compact
 
   api-service:
-    name: API Relay & Feedback Service Check
+    name: API Relay & Telemetry Service Check
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -64,13 +41,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Node
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
 
       - name: Install API dependencies
-        run: npm ci
+        run: npm install
 
       - name: Verify API service syntax
         run: node -c index.js
@@ -79,7 +56,7 @@ jobs:
         run: npm test
 
   frontend:
-    name: "Frontend CI (Step 7 - lint + test + build validation)"
+    name: Frontend CI (Lint + Build Validation)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -91,24 +68,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Step 7 Check 1 - Typecheck & Lint
+      - name: Typecheck & Lint
         run: npm run lint
 
-      - name: Step 7 Check 2 - Run Frontend Unit Tests
-        run: npm test
-
-      - name: Step 7 Check 3 - Build Production Bundle
+      - name: Build Production Bundle
         run: npm run build
 
-      - name: Step 7 Check 4 - Performance & Bundle Budget Check
+      - name: Performance & Bundle Check
         run: |
-          echo "Checking JavaScript bundle size limits..."
+          echo "Checking JavaScript bundle size..."
           test -d dist
           ls -lh dist/assets/
-

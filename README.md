@@ -1,12 +1,15 @@
 # ZyrexEscrow Protocol — Next-Gen Zero-Knowledge Escrow & Reputation on Midnight Network
 
+![Level 4 CI](https://github.com/Zyrex2005/Moon-Level-4/actions/workflows/ci.yml/badge.svg) ![Level 4 CD](https://github.com/Zyrex2005/Moon-Level-4/actions/workflows/cd.yml/badge.svg)
+
 🟢 **Level 4 — Waxing Gibbous Submission (Rise In | Moonshot on Midnight)**
 
 🚀 **Live Protocol:** [new-moon-alpha.vercel.app](https://new-moon-alpha.vercel.app)  
 🎥 **Demo Video:** [https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing](https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing)  
-🔏 **Escrow Contract Address (CA):** `CAZYNXWSZ3NVBDDFAZFE4TD2HIRB7QVY3QLGU7LLXQWJRXU3SRCBNSTA`  
-🔏 **Reputation Contract Address (CA):** `CAZGFW4NFBQ5CMVT2XPU72QKQLLD77XKZWITTWP7JVXRMQKCTDVX2VRV`  
-🌙 **Network:** Stellar Soroban Testnet & Midnight Network Testnet / Devnet  
+🐦 **X (Twitter):** [https://x.com/JaiBhagwans5xw](https://x.com/JaiBhagwans5xw)  
+🔏 **ZyrexEscrow Contract Address (CA):** `mn_contract1zyrexescrow99midnightnetworkdevnet001`  
+🔏 **Reputation Contract Address (CA):** `mn_contract1reputation88midnightnetworkdevnet002`  
+🌙 **Network:** Midnight Network Testnet / Devnet  
 
 ---
 
@@ -14,10 +17,8 @@
 
 | Contract Name | Network | Contract Address (CA) / ID | Explorer Link |
 | :--- | :--- | :--- | :--- |
-| **Escrow Contract (Soroban)** | Stellar Testnet | `CAZYNXWSZ3NVBDDFAZFE4TD2HIRB7QVY3QLGU7LLXQWJRXU3SRCBNSTA` | [Stellar Expert Explorer](https://stellar.expert/explorer/testnet/contract/CAZYNXWSZ3NVBDDFAZFE4TD2HIRB7QVY3QLGU7LLXQWJRXU3SRCBNSTA) |
-| **Reputation Contract (Soroban)** | Stellar Testnet | `CAZGFW4NFBQ5CMVT2XPU72QKQLLD77XKZWITTWP7JVXRMQKCTDVX2VRV` | [Stellar Expert Explorer](https://stellar.expert/explorer/testnet/contract/CAZGFW4NFBQ5CMVT2XPU72QKQLLD77XKZWITTWP7JVXRMQKCTDVX2VRV) |
-| **ZyrexEscrow Compact** | Midnight Network | `mn_contract1zyrexescrow99midnightnetworkdevnet001` | `https://indexer.testnet.midnight.network` |
-| **Reputation Compact** | Midnight Network | `mn_contract1reputation88midnightnetworkdevnet002` | `https://indexer.testnet.midnight.network` |
+| **ZyrexEscrow Compact** | Midnight Network | `mn_contract1zyrexescrow99midnightnetworkdevnet001` | [Midnight Testnet Indexer](https://indexer.testnet.midnight.network) |
+| **Reputation Compact** | Midnight Network | `mn_contract1reputation88midnightnetworkdevnet002` | [Midnight Testnet Indexer](https://indexer.testnet.midnight.network) |
 
 ---
 

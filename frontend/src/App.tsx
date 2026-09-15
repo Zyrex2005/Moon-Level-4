@@ -10,8 +10,8 @@ import { FeedbackWidget } from "./components/FeedbackWidget";
 import {
   callContractMethod,
   ESCROW_CONTRACT_ID,
-  SOROBAN_RPC_URL as MIDNIGHT_RPC_URL,
-  rpcServer,
+  MIDNIGHT_RPC_URL,
+  midnightRpcServer,
 } from "./lib/midnight";
 import { analytics } from "./lib/analytics";
 import { initSentry, captureException } from "./lib/sentry";
@@ -56,7 +56,7 @@ export default function App() {
     analytics.init();
 
     // Fetch latest block sequence on Midnight Network
-    rpcServer
+    midnightRpcServer
       .getLatestLedger()
       .then((res) => setLedgerSequence(res.sequence))
       .catch((err) => console.warn("Failed to fetch Midnight ledger sequence:", err));

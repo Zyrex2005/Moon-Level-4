@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getReputationDetails } from "../lib/soroban";
+import { getReputationDetails } from "../lib/midnight";
 
 export function ReputationBadge({ freelancerAddress }: { freelancerAddress: string }) {
   const [rep, setRep] = useState<{ total_score: number; rating_count: number } | null>(null);
