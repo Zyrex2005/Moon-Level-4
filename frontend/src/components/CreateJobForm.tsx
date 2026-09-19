@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export type JobFormData = {
   freelancer: string;
@@ -72,7 +72,7 @@ export function CreateJobForm({
   const [error, setError] = useState<string | null>(null);
 
   // Sync prefilled address if passed
-  React.useEffect(() => {
+  useEffect(() => {
     if (prefilledFreelancer) {
       setFormData((prev) => ({ ...prev, freelancer: prefilledFreelancer }));
     }
@@ -107,11 +107,8 @@ export function CreateJobForm({
     setFormData((prev) => ({ ...prev, amount: amt }));
   };
 
-  const isFreelancerValid =
-    formData.freelancer.length >= 8; // Midnight address validation
-
-  const isTokenValid =
-    formData.token.length >= 8;
+  const isFreelancerValid = formData.freelancer.length >= 8;
+  const isTokenValid = formData.token.length >= 8;
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,7 +116,7 @@ export function CreateJobForm({
 
     // Validate fields
     if (!isFreelancerValid) {
-      setError("Please enter a valid Midnight freelancer public key.");
+      setError("Please enter a valid Midnight freelancer public key or address.");
       return;
     }
     if (!isTokenValid) {
@@ -163,12 +160,12 @@ export function CreateJobForm({
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       {/* Template Quick Selection */}
-      <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-3">
+      <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-3 shadow-lg">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">
-            ⚡ Quick-Start Gig Templates (Midnight Network)
+          <h3 className="text-xs font-extrabold text-purple-300 uppercase tracking-wider font-mono flex items-center gap-1.5">
+            <span>⚡</span> Quick-Start Gig Templates
           </h3>
-          <span className="text-[10px] text-slate-400">Click to prefill form</span>
+          <span className="text-[10px] text-slate-400 font-mono">Click to prefill details</span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {TEMPLATES.map((tpl, i) => (
@@ -176,18 +173,18 @@ export function CreateJobForm({
               key={i}
               type="button"
               onClick={() => applyTemplate(tpl)}
-              className="text-left p-3.5 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-purple-500/40 transition group flex items-start gap-3"
+              className="text-left p-3.5 rounded-2xl bg-slate-900/70 hover:bg-slate-800/90 border border-slate-800 hover:border-purple-500/40 transition duration-200 group flex items-start gap-3 shadow-sm hover:shadow-[0_0_20px_rgba(168,85,247,0.15)]"
             >
-              <span className="text-2xl">{tpl.icon}</span>
+              <span className="text-2xl p-2 rounded-xl bg-slate-950 border border-slate-800 group-hover:scale-110 transition">{tpl.icon}</span>
               <div>
-                <div className="text-xs font-bold text-white group-hover:text-purple-400 transition">
+                <div className="text-xs font-bold text-white group-hover:text-purple-300 transition">
                   {tpl.title}
                 </div>
-                <div className="text-[11px] text-slate-400 line-clamp-1">
+                <div className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
                   {tpl.description}
                 </div>
-                <div className="mt-1 flex items-center gap-2 text-[10px] font-mono text-purple-300">
-                  <span>{tpl.suggestedAmount} tDUST</span>
+                <div className="mt-1.5 flex items-center gap-2 text-[10px] font-mono text-cyan-300">
+                  <span className="font-bold">{tpl.suggestedAmount} tDUST</span>
                   <span>•</span>
                   <span>{tpl.daysToAdd} days</span>
                 </div>
@@ -200,11 +197,11 @@ export function CreateJobForm({
       {/* Main Form */}
       <form
         onSubmit={handleFormSubmit}
-        className="glass-panel p-6 sm:p-8 rounded-2xl border border-purple-900/40 space-y-6 shadow-2xl relative text-white"
+        className="glass-panel p-6 sm:p-8 rounded-2xl border border-purple-900/50 space-y-6 shadow-2xl relative text-white"
       >
-        <div className="border-b border-slate-800 pb-4">
+        <div className="border-b border-slate-800/90 pb-4">
           <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <span>➕</span> Post ZyrexEscrow Gig on Midnight
+            <span>✨</span> Post ZyrexEscrow Gig on Midnight
           </h2>
           <p className="text-xs text-slate-400 mt-1">
             Lock tDUST in a Midnight Compact zero-knowledge escrow contract. Payments and atomic reputation updates are executed upon completion.
@@ -212,13 +209,13 @@ export function CreateJobForm({
         </div>
 
         {error && (
-          <div className="bg-rose-500/10 border border-rose-500/30 p-4 rounded-xl text-xs text-rose-400 font-semibold flex items-center gap-2">
+          <div className="bg-rose-500/10 border border-rose-500/30 p-4 rounded-xl text-xs text-rose-300 font-semibold flex items-center gap-2 animate-fade-in">
             <span>⚠️</span>
             <span>{error}</span>
           </div>
         )}
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Freelancer Address */}
           <div>
             <label className="block text-xs font-bold text-slate-300 mb-1.5 font-mono">
@@ -230,7 +227,7 @@ export function CreateJobForm({
               value={formData.freelancer}
               onChange={handleChange}
               placeholder="mn_test1q8zyrex88midnightnetworkescrow9901"
-              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-purple-500 transition font-mono"
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus-ring font-mono"
             />
           </div>
 
@@ -245,7 +242,7 @@ export function CreateJobForm({
               value={formData.token}
               onChange={handleChange}
               placeholder={DEFAULT_MIDNIGHT_TOKEN}
-              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-300 placeholder-slate-600 focus:outline-none focus:border-purple-500 transition font-mono"
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-xs text-slate-300 placeholder-slate-600 focus-ring font-mono"
             />
           </div>
 
@@ -261,7 +258,7 @@ export function CreateJobForm({
                     key={amt}
                     type="button"
                     onClick={() => applyAmount(amt)}
-                    className="text-[10px] font-mono bg-slate-900 hover:bg-slate-800 text-purple-300 px-2 py-0.5 rounded-md border border-slate-800 transition"
+                    className="text-[10px] font-mono bg-slate-900 hover:bg-slate-800 text-purple-300 px-2.5 py-1 rounded-lg border border-slate-800 transition font-bold"
                   >
                     {amt} tDUST
                   </button>
@@ -275,7 +272,7 @@ export function CreateJobForm({
               value={formData.amount}
               onChange={handleChange}
               placeholder="e.g. 150"
-              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-purple-500 transition font-mono"
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus-ring font-mono"
             />
           </div>
 
@@ -290,7 +287,7 @@ export function CreateJobForm({
               value={formData.description}
               onChange={handleChange}
               placeholder="Detail work scope, deliverables, github repo links, or acceptance criteria..."
-              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-purple-500 transition font-sans"
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus-ring font-sans leading-relaxed"
             />
           </div>
 
@@ -306,7 +303,7 @@ export function CreateJobForm({
                     key={days}
                     type="button"
                     onClick={() => applyDeadlineDays(days)}
-                    className="text-[10px] font-mono bg-slate-900 hover:bg-slate-800 text-purple-300 px-2 py-0.5 rounded-md border border-slate-800 transition"
+                    className="text-[10px] font-mono bg-slate-900 hover:bg-slate-800 text-cyan-300 px-2.5 py-1 rounded-lg border border-slate-800 transition font-bold"
                   >
                     +{days}d
                   </button>
@@ -318,17 +315,33 @@ export function CreateJobForm({
               name="deadlineDate"
               value={formData.deadlineDate}
               onChange={handleChange}
-              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-purple-500 transition font-mono"
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 text-xs text-white focus-ring font-mono"
             />
           </div>
         </div>
+
+        {/* Live Card Preview Box */}
+        {formData.description && (
+          <div className="bg-slate-950/80 p-4 rounded-2xl border border-purple-500/30 space-y-2">
+            <span className="text-[10px] font-mono uppercase text-purple-400 font-extrabold tracking-wider block">
+              ✦ Live Gig Card Preview
+            </span>
+            <div className="text-xs font-bold text-white">
+              {formData.description}
+            </div>
+            <div className="flex justify-between items-center text-[10px] font-mono text-slate-400 pt-1 border-t border-slate-800/80">
+              <span>Budget: <strong className="text-cyan-300">{formData.amount || "0"} tDUST</strong></span>
+              <span>Deadline: <strong className="text-purple-300">{formData.deadlineDate || "Not set"}</strong></span>
+            </div>
+          </div>
+        )}
 
         {/* Submit Button */}
         <div className="pt-2">
           <button
             type="submit"
             disabled={isSubmitting || !walletConnected}
-            className="w-full bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 hover:from-purple-400 hover:to-cyan-300 text-slate-950 font-black py-3 px-6 rounded-xl transition text-xs shadow-[0_0_20px_rgba(168,85,247,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 hover:from-purple-400 hover:to-cyan-300 text-slate-950 font-black py-3.5 px-6 rounded-2xl transition text-xs shadow-[0_0_25px_rgba(168,85,247,0.35)] hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
           >
             {isSubmitting
               ? "Submitting Compact Circuit Transaction..."

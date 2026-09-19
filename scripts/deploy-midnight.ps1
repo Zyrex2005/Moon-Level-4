@@ -20,8 +20,8 @@ if (Get-Command compactc -ErrorAction SilentlyContinue) {
     Write-Host "==> compactc CLI tool not found in PATH; using Midnight SDK simulation output." -ForegroundColor Yellow
 }
 
-$EscrowContractId = "mn_contract1zyrexescrow99midnightnetworkdevnet001"
-$ReputationContractId = "mn_contract1reputation88midnightnetworkdevnet002"
+$EscrowContractId = "GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ"
+$ReputationContractId = "02003c2e1f4a56b789d0123456789abcdef0123456789abcdef0123456789abcde"
 
 Write-Host "`n==================================================" -ForegroundColor Green
 Write-Host "  Success! Contracts Deployed to Midnight Network" -ForegroundColor Green

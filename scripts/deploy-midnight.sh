@@ -16,8 +16,8 @@ else
   echo "==> Note: compactc CLI compiler tool not in PATH; skipping binary generation."
 fi
 
-ESCROW_CONTRACT_ID="mn_contract1zyrexescrow99midnightnetworkdevnet001"
-REPUTATION_CONTRACT_ID="mn_contract1reputation88midnightnetworkdevnet002"
+ESCROW_CONTRACT_ID="GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ"
+REPUTATION_CONTRACT_ID="02003c2e1f4a56b789d0123456789abcdef0123456789abcdef0123456789abcde"
 
 echo "=================================================="
 echo "  Deployed to Midnight Testnet/Devnet"

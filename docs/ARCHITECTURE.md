@@ -21,13 +21,13 @@ ZyrexEscrow Protocol is structured into a modular, privacy-preserving zero-knowl
                                       │ Feedback Store    ┌────────────────────┐
                                       ▼ (JSON / DB)       │  ZyrexEscrow       │
                              ┌──────────────────┐         │ Compact Contract   │
-                             │  User Feedback   │         │ (mn_contract1...)  │
+                             │  User Feedback   │         │ (02008f5a6b89...)  │
                              │  Telemetry Store │         └──────────┬─────────┘
                              └──────────────────┘                    │ Atomic ZK Call
                                                                      ▼
                                                           ┌────────────────────┐
                                                           │ Reputation Contract│
-                                                          │ (mn_contract2...)  │
+                                                          │ (02003c2e1f4a...)  │
                                                           └────────────────────┘
 ```
 

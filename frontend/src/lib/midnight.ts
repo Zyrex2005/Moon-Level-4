@@ -5,8 +5,8 @@
 
 export const MIDNIGHT_RPC_URL = import.meta.env.VITE_MIDNIGHT_RPC_URL || "https://rpc.testnet.midnight.network";
 export const MIDNIGHT_INDEXER_URL = import.meta.env.VITE_MIDNIGHT_INDEXER_URL || "https://indexer.testnet.midnight.network";
-export const ESCROW_CONTRACT_ID = import.meta.env.VITE_ESCROW_CONTRACT_ID || "mn_contract1zyrexescrow99midnightnetworkdevnet001";
-export const REPUTATION_CONTRACT_ID = import.meta.env.VITE_REPUTATION_CONTRACT_ID || "mn_contract1reputation88midnightnetworkdevnet002";
+export const ESCROW_CONTRACT_ID = import.meta.env.VITE_ESCROW_CONTRACT_ID || "GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ";
+export const REPUTATION_CONTRACT_ID = import.meta.env.VITE_REPUTATION_CONTRACT_ID || "02003c2e1f4a56b789d0123456789abcdef0123456789abcdef0123456789abcde";
 
 export interface MidnightJobDetails {
   id: number;

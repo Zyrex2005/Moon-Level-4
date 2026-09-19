@@ -202,10 +202,11 @@ export default function App() {
   const totalVolume = jobs.reduce((sum, j) => sum + (parseFloat(j.amount) || 0), 0);
   const activeEscrowsCount = jobs.filter((j) => j.status === "Funded").length;
   const completedCount = jobs.filter((j) => j.status === "Completed").length;
+  const uniqueWalletsCount = new Set(jobs.flatMap((j) => [j.client, j.freelancer])).size;
 
   return (
-    <div className="min-h-screen bg-[#05070f] text-slate-300 flex flex-col font-sans selection:bg-purple-500 selection:text-slate-950">
-      {/* Header */}
+    <div className="min-h-screen bg-[#03050c] text-slate-300 flex flex-col font-sans selection:bg-purple-500 selection:text-slate-950">
+      {/* Navigation Bar */}
       <Navbar
         address={wallet.address}
         isConnecting={wallet.isConnecting}
@@ -219,41 +220,93 @@ export default function App() {
         ledgerSequence={ledgerSequence}
       />
 
+      {/* Hero Section Banner */}
+      <div className="relative overflow-hidden border-b border-purple-900/30 bg-gradient-to-b from-[#090d20] via-[#050816] to-[#03050c] py-8 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-[11px] font-mono font-bold mb-3 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+              <span>Level 4 — Waxing Gibbous Release</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+              Zero-Knowledge Smart Escrow & Reputation on <span className="text-gradient-cyan">Midnight Network</span>
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+              Lock assets safely in non-custodial Compact smart contracts. Payment releases trigger atomic, private cross-contract reputation updates for Web3 freelancers.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => setActiveTab("post-gig")}
+              className="bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 hover:from-purple-400 hover:to-cyan-300 text-slate-950 font-black px-6 py-3 rounded-2xl text-xs shadow-[0_0_25px_rgba(168,85,247,0.35)] transition transform hover:-translate-y-0.5"
+            >
+              ✨ Post Escrow Gig
+            </button>
+            <button
+              onClick={() => setIsOnboardingOpen(true)}
+              className="bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 font-bold px-5 py-3 rounded-2xl text-xs transition"
+            >
+              📖 Platform Architecture
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8 flex flex-col gap-6">
-        {/* Protocol Overview Hero Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-900/80 p-5 rounded-2xl border border-slate-800 backdrop-blur-2xl shadow-[0_0_30px_rgba(0,0,0,0.4)]">
-          <div className="flex flex-col">
-            <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Total Volume</span>
-            <span className="text-xl font-black text-gradient-cyan font-mono">
-              {totalVolume.toLocaleString()} <span className="text-xs text-slate-400 font-sans">tDUST</span>
-            </span>
+        {/* Live Protocol Summary Cards Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="glass-panel p-5 rounded-2xl border border-slate-800/90 flex items-center gap-4 hover:border-cyan-500/30 transition shadow-lg">
+            <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl font-bold shadow-[0_0_15px_rgba(0,242,254,0.15)]">
+              💎
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold tracking-wider">Total Volume</span>
+              <span className="text-xl font-black text-gradient-cyan font-mono">
+                {totalVolume.toLocaleString()} <span className="text-xs text-slate-400 font-sans">tDUST</span>
+              </span>
+            </div>
           </div>
 
-          <div className="flex flex-col">
-            <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Active Escrows</span>
-            <span className="text-xl font-black text-purple-400 font-mono">
-              {activeEscrowsCount} <span className="text-xs text-slate-400 font-sans">Gigs</span>
-            </span>
+          <div className="glass-panel p-5 rounded-2xl border border-slate-800/90 flex items-center gap-4 hover:border-purple-500/30 transition shadow-lg">
+            <div className="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl font-bold shadow-[0_0_15px_rgba(168,85,247,0.15)]">
+              🔒
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold tracking-wider">Active Escrows</span>
+              <span className="text-xl font-black text-purple-300 font-mono">
+                {activeEscrowsCount} <span className="text-xs text-slate-400 font-sans">Locked</span>
+              </span>
+            </div>
           </div>
 
-          <div className="flex flex-col">
-            <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Settled Volume</span>
-            <span className="text-xl font-black text-emerald-400 font-mono">
-              {completedCount} <span className="text-xs text-slate-400 font-sans">Completed</span>
-            </span>
+          <div className="glass-panel p-5 rounded-2xl border border-slate-800/90 flex items-center gap-4 hover:border-emerald-500/30 transition shadow-lg">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl font-bold shadow-[0_0_15px_rgba(52,211,153,0.15)]">
+              ✓
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold tracking-wider">Completed Gigs</span>
+              <span className="text-xl font-black text-emerald-400 font-mono">
+                {completedCount} <span className="text-xs text-slate-400 font-sans">Settled</span>
+              </span>
+            </div>
           </div>
 
-          <div className="flex flex-col">
-            <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold">Midnight Network</span>
-            <span className="text-xs font-mono font-bold text-white flex items-center gap-1.5 mt-1">
-              <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
-              Midnight Testnet (Devnet)
-            </span>
+          <div className="glass-panel p-5 rounded-2xl border border-slate-800/90 flex items-center gap-4 hover:border-amber-500/30 transition shadow-lg">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl font-bold shadow-[0_0_15px_rgba(251,191,36,0.15)]">
+              👥
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-mono uppercase text-slate-400 font-extrabold tracking-wider">Active Wallets</span>
+              <span className="text-xl font-black text-amber-300 font-mono">
+                {uniqueWalletsCount} <span className="text-xs text-slate-400 font-sans">Users</span>
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Global Contract Config Check */}
+        {/* Global Contract Config Alert */}
         {!isConfigured && (
           <div className="bg-purple-500/10 border border-purple-500/30 p-4 rounded-2xl text-xs text-purple-300 font-semibold flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <span>
@@ -270,7 +323,7 @@ export default function App() {
 
         {/* Transaction Toast Alerts */}
         {txSuccess && (
-          <div className="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl text-xs text-emerald-300 font-bold shadow-lg flex justify-between items-center">
+          <div className="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl text-xs text-emerald-300 font-bold shadow-lg flex justify-between items-center animate-fade-in">
             <span>{txSuccess}</span>
             <button onClick={() => setTxSuccess(null)} className="text-slate-400 hover:text-white">
               ✕
@@ -278,7 +331,7 @@ export default function App() {
           </div>
         )}
         {txError && (
-          <div className="bg-rose-500/10 border border-rose-500/30 p-4 rounded-2xl text-xs text-rose-300 font-bold shadow-lg flex justify-between items-center">
+          <div className="bg-rose-500/10 border border-rose-500/30 p-4 rounded-2xl text-xs text-rose-300 font-bold shadow-lg flex justify-between items-center animate-fade-in">
             <span>Error: {txError}</span>
             <button onClick={() => setTxError(null)} className="text-slate-400 hover:text-white">
               ✕
@@ -301,7 +354,7 @@ export default function App() {
 
               <button
                 onClick={refreshJobs}
-                className="text-xs font-bold text-purple-400 hover:text-purple-300 transition flex items-center gap-1 font-mono bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800"
+                className="text-xs font-bold text-purple-300 hover:text-white transition flex items-center gap-1.5 font-mono bg-slate-900/90 hover:bg-slate-800 px-3.5 py-2 rounded-xl border border-slate-800 shadow-md"
               >
                 <span>🔄</span> Refresh
               </button>
@@ -351,11 +404,19 @@ export default function App() {
             </div>
 
             {!address ? (
-              <div className="glass-panel p-10 rounded-2xl text-center flex flex-col items-center gap-3">
-                <p className="text-sm font-bold text-slate-200">Connect your Midnight Lace wallet to view your escrows.</p>
+              <div className="glass-panel p-10 rounded-2xl text-center flex flex-col items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-2xl">
+                  🔒
+                </div>
+                <div>
+                  <p className="text-base font-bold text-slate-200">Connect Midnight Lace Wallet to view your escrows.</p>
+                  <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
+                    View contracts created by your address or assigned to your freelancer account.
+                  </p>
+                </div>
                 <button
                   onClick={wallet.connect}
-                  className="bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 text-slate-950 font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-[0_0_20px_rgba(168,85,247,0.3)]"
+                  className="bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 text-slate-950 font-black px-6 py-3 rounded-2xl text-xs shadow-[0_0_20px_rgba(168,85,247,0.3)] transition transform hover:-translate-y-0.5"
                 >
                   Connect Lace Wallet
                 </button>
@@ -385,7 +446,7 @@ export default function App() {
             />
 
             <div className="glass-panel p-4 rounded-2xl text-[10px] text-slate-400 flex flex-col gap-1.5 font-mono border border-slate-800">
-              <span className="font-bold text-purple-400 font-sans">Midnight Network Status:</span>
+              <span className="font-bold text-purple-300 font-sans text-xs">Midnight Network Status:</span>
               <span className="break-all">RPC URL: {MIDNIGHT_RPC_URL}</span>
               <span className="break-all">
                 Compact Escrow Contract ID: {ESCROW_CONTRACT_ID || "Not Deployed"}

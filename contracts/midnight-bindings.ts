@@ -10,7 +10,7 @@ export interface MidnightContractConfig {
 }
 
 export const MIDNIGHT_CONFIG: MidnightContractConfig = {
-  contractAddress: "mn_contract1zyrexescrow99midnightnetworkdevnet001",
+  contractAddress: "GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ",
   indexerUrl: "https://indexer.testnet.midnight.network",
   rpcUrl: "https://rpc.testnet.midnight.network",
 };

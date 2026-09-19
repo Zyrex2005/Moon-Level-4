@@ -68,7 +68,7 @@ app.get("/api/rpc-relay/events", async (req, res) => {
   try {
     const mockEvents = [
       {
-        contractId: contractId || "mn_contract1zyrexescrow99midnightnetworkdevnet001",
+        contractId: contractId || "GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ",
         eventType: "JobCreated",
         ledgerSequence: 489210,
         timestamp: new Date().toISOString(),

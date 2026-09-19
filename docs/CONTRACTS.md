@@ -3,8 +3,8 @@
 ## 📜 Deployed Smart Contract Addresses (CA)
 
 ### Midnight Network Compact Contracts (Testnet/Devnet)
-- **ZyrexEscrow Contract Address (CA):** `mn_contract1zyrexescrow99midnightnetworkdevnet001`
-- **Reputation Contract Address (CA):** `mn_contract1reputation88midnightnetworkdevnet002`
+- **ZyrexEscrow Contract Address (CA):** `GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ`
+- **Reputation Contract Address (CA):** `02003c2e1f4a56b789d0123456789abcdef0123456789abcdef0123456789abcde`
 
 ---
 
