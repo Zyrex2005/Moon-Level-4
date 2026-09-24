@@ -9,9 +9,9 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
     Write-Error "Git is not installed or not in the PATH. Git is required to use this script."
 }
 
-# Ensure we are in the root directory by checking for Cargo.toml
-if (-not (Test-Path "Cargo.toml")) {
-    Write-Error "Please run this script from the project root directory (which contains Cargo.toml)."
+# Ensure we are in the root directory by checking for package.json
+if (-not (Test-Path "package.json")) {
+    Write-Error "Please run this script from the project root directory (which contains package.json)."
 }
 
 # Output zip filename

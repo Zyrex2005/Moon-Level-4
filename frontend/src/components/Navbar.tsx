@@ -91,7 +91,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         </nav>
 
         {/* Desktop Right Tools */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2.5">
+          <a
+            href="https://testnet.midnightexplorer.com"
+            target="_blank"
+            rel="noreferrer"
+            className="text-[10px] font-bold text-purple-300 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-full hover:bg-purple-500/20 transition flex items-center gap-1 font-mono shadow-[0_0_12px_rgba(168,85,247,0.15)]"
+            title="Inspect Contract on Midnight Explorer"
+          >
+            <span>🔍 Explorer ↗</span>
+          </a>
+
           <a
             href="https://midnight.network/"
             target="_blank"
@@ -99,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="text-[10px] font-bold text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 px-3 py-1.5 rounded-full hover:bg-cyan-500/20 transition flex items-center gap-1 font-mono shadow-[0_0_12px_rgba(0,242,254,0.15)]"
             title="Get free Testnet tDUST"
           >
-            <span>🚰</span> tDUST Faucet ↗
+            <span>🚰</span> Faucet ↗
           </a>
 
           <button

@@ -7,8 +7,9 @@
 🚀 **Live Protocol:** [new-moon-alpha.vercel.app](https://new-moon-alpha.vercel.app)  
 🎥 **Demo Video:** [https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing](https://drive.google.com/file/d/1gF_c0dQRqNR60qFIehgE2Y9NsJxVWu8I/view?usp=sharing)  
 🐦 **X (Twitter):** [https://x.com/JaiBhagwans5xw](https://x.com/JaiBhagwans5xw)  
-🔏 **ZyrexEscrow Contract Address (CA):** `GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ`  
-🔏 **Reputation Contract Address (CA):** `02003c2e1f4a56b789d0123456789abcdef0123456789abcdef0123456789abcde`  
+🔏 **ZyrexEscrow Contract Address (CA):** [`GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ`](https://testnet.midnightexplorer.com)  
+🔏 **Reputation Contract Address (CA):** [`02003c2e1f4a56b789d0123456789abcdef0123456789abcdef0123456789abcde`](https://testnet.midnightexplorer.com)  
+🔍 **Midnight Explorer:** [https://testnet.midnightexplorer.com](https://testnet.midnightexplorer.com)  
 🌙 **Network:** Midnight Network Testnet / Devnet  
 
 ---
@@ -17,8 +18,8 @@
 
 | Contract Name | Network | Contract Address (CA) / ID | Explorer Link |
 | :--- | :--- | :--- | :--- |
-| **ZyrexEscrow Compact** | Midnight Network | `GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ` | [Midnight Testnet Indexer](https://indexer.testnet.midnight.network) |
-| **Reputation Compact** | Midnight Network | `02003c2e1f4a56b789d0123456789abcdef0123456789abcdef0123456789abcde` | [Midnight Testnet Indexer](https://indexer.testnet.midnight.network) |
+| **ZyrexEscrow Compact** | Midnight Network | `GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ` | [Midnight Testnet Explorer ↗](https://testnet.midnightexplorer.com) |
+| **Reputation Compact** | Midnight Network | `02003c2e1f4a56b789d0123456789abcdef0123456789abcdef0123456789abcde` | [Midnight Testnet Explorer ↗](https://testnet.midnightexplorer.com) |
 
 ---
 

@@ -6,12 +6,14 @@
 export interface MidnightContractConfig {
   contractAddress: string;
   indexerUrl: string;
+  explorerUrl: string;
   rpcUrl: string;
 }
 
 export const MIDNIGHT_CONFIG: MidnightContractConfig = {
   contractAddress: "GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ",
-  indexerUrl: "https://indexer.testnet.midnight.network",
+  indexerUrl: "https://testnet.midnightexplorer.com",
+  explorerUrl: "https://testnet.midnightexplorer.com",
   rpcUrl: "https://rpc.testnet.midnight.network",
 };
 

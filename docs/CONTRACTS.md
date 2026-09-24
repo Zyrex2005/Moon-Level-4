@@ -3,8 +3,9 @@
 ## 📜 Deployed Smart Contract Addresses (CA)
 
 ### Midnight Network Compact Contracts (Testnet/Devnet)
-- **ZyrexEscrow Contract Address (CA):** `GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ`
-- **Reputation Contract Address (CA):** `02003c2e1f4a56b789d0123456789abcdef0123456789abcdef0123456789abcde`
+- **ZyrexEscrow Contract Address (CA):** [`GARNEUZKZX3QPOXNVD3KVYF3QRMXKQUA3TXD4HXLGZ36DXYXLZIDFFZJ`](https://testnet.midnightexplorer.com)
+- **Reputation Contract Address (CA):** [`02003c2e1f4a56b789d0123456789abcdef0123456789abcdef0123456789abcde`](https://testnet.midnightexplorer.com)
+- **Midnight Network Explorer:** [https://testnet.midnightexplorer.com](https://testnet.midnightexplorer.com)
 
 ---
 

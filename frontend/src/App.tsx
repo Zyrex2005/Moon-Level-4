@@ -7,10 +7,12 @@ import { CreateJobForm } from "./components/CreateJobForm";
 import type { JobFormData } from "./components/CreateJobForm";
 import { JobList } from "./components/JobList";
 import { FeedbackWidget } from "./components/FeedbackWidget";
+import { ContractInfoCard } from "./components/ContractInfoCard";
 import {
   callContractMethod,
   ESCROW_CONTRACT_ID,
   MIDNIGHT_RPC_URL,
+  MIDNIGHT_EXPLORER_URL,
   midnightRpcServer,
 } from "./lib/midnight";
 import { analytics } from "./lib/analytics";
@@ -306,6 +308,9 @@ export default function App() {
           </div>
         </div>
 
+        {/* Smart Contract Address (CA) & Explorer Details Card */}
+        <ContractInfoCard />
+
         {/* Global Contract Config Alert */}
         {!isConfigured && (
           <div className="bg-purple-500/10 border border-purple-500/30 p-4 rounded-2xl text-xs text-purple-300 font-semibold flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -470,6 +475,63 @@ export default function App() {
           </Suspense>
         )}
       </main>
+
+      {/* Footer Section */}
+      <footer className="border-t border-slate-800/80 bg-[#02040a] py-8 px-4 mt-12 text-xs text-slate-400 font-sans">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col gap-1 text-center md:text-left">
+            <div className="flex items-center justify-center md:justify-start gap-2 font-black text-white text-base">
+              <span>🌙 ZyrexEscrow Protocol</span>
+              <span className="text-[10px] font-mono font-normal bg-purple-500/10 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-full">
+                Level 4 — Midnight Testnet
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-400">
+              Privacy-First Web3 Freelance Escrow & Zero-Knowledge Reputation Network built with Midnight Compact Smart Contracts.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] font-mono">
+            <a
+              href={MIDNIGHT_EXPLORER_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-cyan-300 transition flex items-center gap-1"
+            >
+              <span>🔍 Explorer ↗</span>
+            </a>
+            <a
+              href="https://docs.midnight.network"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-purple-300 transition flex items-center gap-1"
+            >
+              <span>📖 Docs ↗</span>
+            </a>
+            <a
+              href="https://midnight.network"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-emerald-300 transition flex items-center gap-1"
+            >
+              <span>🚰 Faucet ↗</span>
+            </a>
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdkH5jicUv_iJpKaAULf9jGbagu9LoSYN7ZQgLY-XNXUU-MVA/viewform"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-amber-300 transition flex items-center gap-1"
+            >
+              <span>📝 Feedback Form ↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto border-t border-slate-900 mt-6 pt-4 flex flex-col sm:flex-row justify-between items-center text-[10px] font-mono text-slate-400 gap-2">
+          <span>Escrow CA: <code className="text-slate-300">{ESCROW_CONTRACT_ID}</code></span>
+          <span>© 2026 ZyrexEscrow Protocol. Built for Midnight Network Moonshot.</span>
+        </div>
+      </footer>
 
       {/* Floating In-App Feedback Widget */}
       <FeedbackWidget
